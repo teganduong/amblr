@@ -6,7 +6,6 @@ angular.module ('amblr.services', [])
   POIs.getPOIs = function() {
     return $http.get(ENV.apiEndpoint + '/api/pois/')
     .then(function(pois) {
-      console.log('returning pois are: ', pois);
       return pois;
     })
     .catch(function(err) {
@@ -15,7 +14,6 @@ angular.module ('amblr.services', [])
   };
 
   POIs.savePOI = function(POI) {
-    console.log('in save poi', POI);
     return $http({
       method: 'POST',
       url: ENV.apiEndpoint + '/api/pois/',
@@ -44,7 +42,6 @@ angular.module ('amblr.services', [])
 
     var options = {timeout: 10000, enableHighAccuracy: true};
     return $cordovaGeolocation.getCurrentPosition(options).then(function (pos) {
-      console.log('Got pos', pos);
       position.lat = pos.coords.latitude;
       position.long = pos.coords.longitude;
 

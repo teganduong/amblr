@@ -118,7 +118,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   uiGmapIsReady.promise()
   .then(function (instances) {
 
-    console.log('equals = ' + (instances[0].map === $scope.map.control.getGMap()));
+    // console.log('equals = ' + (instances[0].map === $scope.map.control.getGMap()));
 
     // retrieve all the POIs from server and place them on map
     $scope.addNewPOIs();
@@ -231,7 +231,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $scope.setMapCenterCurrent = function () {
     Location.getCurrentPos()
       .then(function(pos) {
-        console.log('pos from factory call', pos);
       //   //once position is found, open up modal form
         $scope.map.center = {
           latitude: pos.lat,

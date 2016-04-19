@@ -13,4 +13,3 @@ poiSchema.plugin(timestamps);
 
 module.exports = mongoose.model('POI', poiSchema);
 
-
