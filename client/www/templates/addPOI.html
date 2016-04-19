@@ -24,6 +24,10 @@
         <span class="input-label">Description</span>
         <input type="text" placeholder="Describe what this POI is" ng-model="currentPOI.description">
       </label>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Add to Route</span>
+        <input type="text" placeholder="Add POI to a Route (optional)" ng-model="currentPOI.route">
+      </label>
       <div class="row">
       <button class="button col block button-dark" ng-click="savePOI()">Add POI</button>
       </div>
