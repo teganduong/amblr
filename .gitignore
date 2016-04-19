@@ -13,3 +13,9 @@ server/node_modules
 server/logs/logs.log
 logs
 npm-debug.log
+
+# VS CODE SPECIFIC
+jsconfig.json
+typings.json
+typings
+
