@@ -1,5 +1,5 @@
 angular.module('amblr.signup', [])
-.controller('signupCtrl', function($scope, $ionicModal, $http, $location, $ionicPopup) {
+.controller('signupCtrl', function($scope, $ionicModal, $http, $location, $ionicPopup, ENV) {
   // Form data for the signup modal
   $scope.signupData = {};
 
@@ -32,7 +32,7 @@ angular.module('amblr.signup', [])
     console.log('Doing signup with username: ', $scope.signupData.username);
     $http({
       method: 'POST',
-      url: '/api/users/signup',
+      url: ENV.apiEndpoint + '/api/users/signup',
       data: $scope.signupData
     })
     .then(function(res) {
