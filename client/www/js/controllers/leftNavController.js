@@ -1,4 +1,4 @@
-angular.module('amblr.leftnav', [])
+angular.module('amblr.leftnav', ['ngDraggable'])
 .controller('LeftMenuNav', function($scope, $ionicSideMenuDelegate, $http, $rootScope) {
 
   $scope.loggedIn = false;
@@ -19,4 +19,9 @@ angular.module('amblr.leftnav', [])
     $ionicSideMenuDelegate.toggleLeft();
     $scope.isLoggedIn();
   };
+  
+  $scope.$on('draggable:end', function(target, event) {
+    // hardcoded offset to 27 px
+    $scope.$broadcast('newMarkerDrop', event.x, event.y - 27);
+  });
 });
