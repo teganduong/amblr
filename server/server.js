@@ -56,3 +56,12 @@ app.listen(port, function(err) {
   }
   console.log('Amblr API server is listening on port: ' + port);
 });
+
+app.get('/checklogin',function(req,res){
+  if (req.user) {
+    res.send(true);
+  }
+  else {
+    res.send(false);
+  }
+});
