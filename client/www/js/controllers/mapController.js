@@ -116,13 +116,18 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         },
     }
   };
+  
+  /* hacks to get overlay to work */
+  $scope.overlay = new $window.google.maps.OverlayView();
+  $scope.overlay.draw = function() {}; // empty function required
+  
 
   //use a promise to tell when the map is ready to be interacted with
   uiGmapIsReady.promise()
   .then(function (instances) {
-
-    // console.log('equals = ' + (instances[0].map === $scope.map.control.getGMap()));
-
+    $scope.overlay.setMap(instances[0].map);
+    console.log('equals = ' + (instances[0].map === $scope.map.control.getGMap()));
+    
     // retrieve all the POIs from server and place them on map
     $scope.addNewPOIs();
 
@@ -359,6 +364,12 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         console.log('error in saving poi to database', err);
       });
   };
+  
+  $scope.$on('newMarkerDrop', function(event, x, y) {
+    var geocoords = $scope.overlay.getProjection().fromContainerPixelToLatLng(new google.maps.Point(x, y));
+    $scope.placeMarker(geocoords);
+    // call add poi click function but it's being refactored.
+  });
 
 });
 
