@@ -127,7 +127,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   .then(function (instances) {
     $scope.overlay.setMap(instances[0].map);
     console.log('equals = ' + (instances[0].map === $scope.map.control.getGMap()));
-    
+
     // retrieve all the POIs from server and place them on map
     $scope.addNewPOIs();
 
