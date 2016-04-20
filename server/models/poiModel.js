@@ -6,6 +6,7 @@ var poiSchema = mongoose.Schema({
   long: { type: Number, required: true },
   type: { type: String },
   description: { type: String },
+  routeId: { type: String },
   title: { type: String, required: true },
   userID: { type: String}
 });
@@ -13,5 +14,4 @@ var poiSchema = mongoose.Schema({
 poiSchema.plugin(timestamps);
 
 module.exports = mongoose.model('POI', poiSchema);
-
 

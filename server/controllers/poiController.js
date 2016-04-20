@@ -1,7 +1,11 @@
 var mongoose = require('mongoose');
 var POI = require('../models/poiModel.js');
+var Route = require('../models/routeModel.js');
 var sampleData = require('../data/samplePOIData.js');
 var logger = require('../config/logger.js');
+var Promise = require('bluebird');
+
+Promise.promisifyAll( mongoose );
 
 /*
    This function will load sample data 
@@ -46,20 +50,54 @@ var createPOIsFromData = function() {
 exports.savePOI = function(req, res) {
   logger.info('POI to create: ' + req.body);
 
-  var newPOI = req.body;
+  //Need to split out the route information from the req.body
+  //pass the route information to create a new route
+  // get the route ID and add it to the POI's routeID field 
+  // need to go through each property of the request body
+  // var newPOI = req.body;
+  var newPOI = {};
+  for (var key in req.body) {
+    // if the key does not equal route, then add it to the newPOI
+    if (key !== 'route') {
+      newPOI[key] = req.body[key];
+    }
+  }
 
-  POI.create(newPOI, function(err, newPOI) {
-    if (err) {
+  //check if the new POI has a route
+  if (req.body['route']) {
+    var newRoute = {name: req.body['route']};
+  }
+
+  Route.findOneAsync(newRoute)
+    .then(function(route){
+      //check if route exists
+      if(!route) {
+      // if it doesn't exist, then add it to database so we can get its ID
+        return Route.createAsync(newRoute);
+      }
+      // if it did exist then just return it 
+      return route;
+    })
+    .then(function(route) {
+      console.log('here is the route:', route);
+      //receive the route that was returned after creation or finding
+      //pass on the route id to the newPOI object to create new POI
+      newPOI.routeId  = route._id;
+
+      return POI.createAsync(newPOI);
+    })
+    .then(function(result) {
+      logger.info('POI successfully created: ' + result);
+
+      res.status(201);
+      res.json(result);
+    })
+    .catch(function(err) {
       logger.error('in newPOI save ', err);
       res.status(400);
       return res.json(err);
-    } 
-
-    logger.info('POI successfully created: ' + newPOI);
-
-    res.status(201);
-    res.json(newPOI);
-  });
+    });
+    // still need to address situation where no route is given
 };
 
 

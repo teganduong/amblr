@@ -36,11 +36,9 @@ angular.module('amblr.addPOI', [])
     //post currentPOI to the database
     POIs.savePOI($scope.currentPOI)
     .then(function(poi) {
-      console.log('poi saved', poi);
       //clear out currentPOI
       $scope.poiSaved = poi;
       $scope.currentPOI = {type: 'good'};
-      console.log($scope.currentPOI, 'after');
       $scope.closeForm();
       // redirect to home page (may not need this)
       $scope.onSuccess();
@@ -86,12 +84,10 @@ angular.module('amblr.addPOI', [])
     //get current position from Location factory
     Location.getCurrentPos()
     .then(function(pos) {
-      console.log('pos from factory call', pos);
       $scope.currentPOI.lat = pos.lat;
       $scope.currentPOI.long = pos.long;
       $scope.currentPOI.userID = $rootScope.userID;
       //once position is found, open up modal form
-      console.log($scope.currentPOI);
       $scope.modal.show();
     })
     .catch(function(err) {
