@@ -79,15 +79,14 @@ exports.savePOI = function(req, res) {
       return route;
     })
     .then(function(route) {
+      console.log('here is the route:', route);
       //receive the route that was returned after creation or finding
       //pass on the route id to the newPOI object to create new POI
-      newPOI.routeIdgit  = route._id;
-      console.log('new newPOI to create:', newPOI);
+      newPOI.routeId  = route._id;
 
       return POI.createAsync(newPOI);
     })
     .then(function(result) {
-      console.log('result of creation');
       logger.info('POI successfully created: ' + result);
 
       res.status(201);
