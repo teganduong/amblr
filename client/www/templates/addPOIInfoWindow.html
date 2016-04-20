@@ -9,6 +9,9 @@
   <label class="item item-input item-stacked-label">
     <input type="text" placeholder='Description' ng-model="$parent.$parent.currentPOI.description">
   </label>
+  <label class="item item-input item-stacked-label">
+    <input type="text" placeholder="Add to Route" ng-model="currentPOI.route">
+  </label>
   <div class="row">
     <button class="button col block button-dark" ng-click="$parent.$parent.savePOI()">Add POI</button>
   </div>
