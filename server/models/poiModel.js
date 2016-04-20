@@ -6,7 +6,8 @@ var poiSchema = mongoose.Schema({
   long: { type: Number, required: true },
   type: { type: String },
   description: { type: String },
-  title: { type: String, required: true }
+  title: { type: String, required: true },
+  userID: { type: String}
 });
 
 poiSchema.plugin(timestamps);
