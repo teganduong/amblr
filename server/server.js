@@ -7,7 +7,7 @@ var logger = require('./config/logger.js');
 
 var poiRouter = require('./routers/poiRouter.js');
 var userRouter = require('./routers/userRouter.js');
-
+var routeRouter = require('./routers/routeRouter.js');
 
 // configuration variables for server port and mongodb URI
 var port = process.env.PORT || 3000;
@@ -48,6 +48,8 @@ app.use('/api/pois', poiRouter);
 
 // middleware to configure routes for all user-related URIs
 app.use('/api/users', userRouter);
+
+app.use('/api/routes', routeRouter);
 
 //listening
 app.listen(port, function(err) {

@@ -6,7 +6,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     libraries: 'weather,geometry,visualization'
   });
 })
-.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, POIs,
+.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, POIs, Routes,
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
   $window, Location, $timeout, $location) {
 
@@ -200,10 +200,9 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           description: $scope.POIs[i].description,
           title: $scope.POIs[i].title,
           type: $scope.POIs[i].type,
-          route: $scope.POIs[i].route,
+          route: $scope.POIs[i].routeId,
           events: {
             click: function (map, eventName, marker) {
-              console.log(marker);
               var lat = marker.latitude;
               var lon = marker.longitude;
               var infoWindow = $scope.map.infoWindow;
@@ -349,7 +348,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $scope.savePOI = function() {
      POIs.savePOI($scope.currentPOI)
       .then(function(poi) {
-        console.log('poi saved', poi);
         //clear out currentPOI
         $scope.map.droppedInfoWindow.show = false;
         $scope.resetPOI();
