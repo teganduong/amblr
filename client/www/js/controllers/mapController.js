@@ -95,6 +95,9 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         },
         show: false,
         templateUrl: '../../templates/POIInfoWindow.html',
+        templateParameter: {
+          route: 'test route'
+        }
     },
     droppedInfoWindow: {
         coords: {
@@ -193,9 +196,10 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           description: $scope.POIs[i].description,
           title: $scope.POIs[i].title,
           type: $scope.POIs[i].type,
+          route: $scope.POIs[i].route,
           events: {
             click: function (map, eventName, marker) {
-                
+              console.log(marker);
               var lat = marker.latitude;
               var lon = marker.longitude;
               var infoWindow = $scope.map.infoWindow;
@@ -214,6 +218,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
               infoWindow.coords.title = marker.title;
               infoWindow.coords.type = marker.type;
               infoWindow.coords.description = marker.description;
+              infoWindow.coords.route = marker.route;
               infoWindow.show = true;
             }
           },
