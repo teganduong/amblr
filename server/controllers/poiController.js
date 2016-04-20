@@ -46,8 +46,11 @@ var createPOIsFromData = function() {
 exports.savePOI = function(req, res) {
   logger.info('POI to create: ' + req.body);
 
+  //Need to split out the route information from the req.body
+  //pass the route information to create a new route
+  // get the route ID and add it to the POI's routeID field 
+  // this runs for both processes
   var newPOI = req.body;
-
   POI.create(newPOI, function(err, newPOI) {
     if (err) {
       logger.error('in newPOI save ', err);

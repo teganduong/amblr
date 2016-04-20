@@ -19,6 +19,7 @@ angular.module ('amblr.services', [])
       url: ENV.apiEndpoint + '/api/pois/',
       data: JSON.stringify(POI)
     }).then(function(res) {
+      //both addPOIs run this
       $rootScope.$broadcast('reloadPOIs');
       return res;
     })

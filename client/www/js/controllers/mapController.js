@@ -348,7 +348,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   };
 
   $scope.savePOI = function() {
-     console.log('saving POI: ' + JSON.stringify($scope.currentPOI));
      POIs.savePOI($scope.currentPOI)
       .then(function(poi) {
         console.log('poi saved', poi);
