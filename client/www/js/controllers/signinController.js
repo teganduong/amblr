@@ -37,7 +37,7 @@ angular.module('amblr.signin', [])
     .then(function(res) {
       $scope.closeSignin();
       if (res.status === 200) { // if sign in is successful, go to private menu
-        $location.path('/menu-private/home');
+        $location.path('/menu/home');
       } 
     }, function(err) {
       $scope.showAlert(); // if sign in is not successful, show alert message
