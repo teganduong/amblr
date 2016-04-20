@@ -38,7 +38,7 @@ angular.module('amblr.signup', [])
     .then(function(res) {
       $scope.closeSignup();
       if (res.status === 200) { // if sign up is successful, go to private menu
-        $location.path('/menu-private/home');
+        $location.path('/menu/home');
       } 
     }, function(err) {
       $scope.showAlert(); // if sign up is not successful, show alert message
