@@ -6,7 +6,7 @@ var poiSchema = mongoose.Schema({
   long: { type: Number, required: true },
   type: { type: String },
   description: { type: String },
-  route: { type: String },
+  routeId: { type: String },
   title: { type: String, required: true }
 });
 
