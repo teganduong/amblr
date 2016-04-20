@@ -65,3 +65,11 @@ app.get('/checklogin',function(req,res){
     res.send(false);
   }
 });
+
+app.get('/checkuserid', function(req, res){
+  if (req.user) {
+    res.send(req.user._id);
+  } else {
+    res.send(null);
+  }
+})
