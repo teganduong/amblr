@@ -1,5 +1,5 @@
 angular.module('amblr.addPOI', [])
-.controller('addPOIController', function($scope, $timeout, $ionicModal, POIs, $location, $ionicPopup, Location) {
+.controller('addPOIController', function($scope, $timeout, $http, $rootScope, $ionicModal, POIs, $location, $ionicPopup, Location) {
 
   $ionicModal.fromTemplateUrl('../../templates/addPOI.html', {
     scope: $scope,
@@ -11,10 +11,25 @@ angular.module('amblr.addPOI', [])
     $scope.modal = modal;
   });
 
+  $scope.userID = null;
+
+  $scope.getUserID = function() {
+    $http.get('/checkuserid')
+    .success(function(data) {
+      console.log(data);
+      $rootScope.userID = data;
+    })
+    .error(function(data) {
+      console.log('error: ' + data);
+    });
+  };
+
+
   //current POI is an object with properties: lat, long, type, description, title
   //set default of type to good
   $scope.selected = 'good';
-  $scope.currentPOI = { type: 'good'};
+  $scope.currentPOI = { 
+    type: 'good'};
 
   //save POI upon user save
   $scope.savePOI = function() {
@@ -65,11 +80,13 @@ angular.module('amblr.addPOI', [])
   };
 
   $scope.openForm = function() {
+    $scope.getUserID();
     //get current position from Location factory
     Location.getCurrentPos()
     .then(function(pos) {
       $scope.currentPOI.lat = pos.lat;
       $scope.currentPOI.long = pos.long;
+      $scope.currentPOI.userID = $rootScope.userID;
       //once position is found, open up modal form
       $scope.modal.show();
     })

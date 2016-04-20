@@ -21,7 +21,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $scope.dropMarker = {
     id: 0
   };
-  
+  $scope.dropControl = {};
   // $scope.currentPOI = {
   //   lat: -1,
   //   long: -1,
@@ -265,7 +265,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
   // delete the user added marker (dropMarker object)
   $scope.removeMarker = function() {
-    if (angular.isDefined($scope.dropMarker)) {
+      if (angular.isDefined($scope.dropMarker)) {
       delete $scope.dropMarker;
     }
   };
@@ -366,7 +366,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $scope.$on('newMarkerDrop', function(event, x, y) {
     var geocoords = $scope.overlay.getProjection().fromContainerPixelToLatLng(new google.maps.Point(x, y));
     $scope.placeMarker(geocoords);
-    // call add poi click function but it's being refactored.
+    google.maps.event.trigger($scope.dropControl.getGMarkers()[0], 'click');
   });
 
 });

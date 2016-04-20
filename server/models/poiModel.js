@@ -7,7 +7,8 @@ var poiSchema = mongoose.Schema({
   type: { type: String },
   description: { type: String },
   routeId: { type: String },
-  title: { type: String, required: true }
+  title: { type: String, required: true },
+  userID: { type: String}
 });
 
 poiSchema.plugin(timestamps);
