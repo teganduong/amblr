@@ -40,7 +40,7 @@ angular.module ('amblr.services', [])
     var url = ENV.apiEndpoint + '/api/pois/' + poiID;
     return $http.delete(url, {})
               .success(function(data, status, headers, config) {
-                // console.log('POI successfully deleted!');
+                console.log('POI successfully deleted!');
               })
               .error(function(data, status, headers, config) {
                 console.error('Error in deleting POI');
@@ -67,6 +67,23 @@ angular.module ('amblr.services', [])
       });
     };
   return Routes;
+})
+
+.factory('Users', function($http, $rootScope, ENV) {
+  var Users = {};
+
+  Users.getUserById = function(userID) {
+    var url = ENV.apiEndpoint + '/api/users/' + userID;
+    return $http.get(url, {})
+      .success(function(data, status, headers, config) {
+        console.log('User successfully retrieved: ', data);
+      })
+      .error(function(data, status, headers, config) {
+        console.error('Error in getting user: ', data);
+      });
+  };
+
+  return Users;
 })
 
 .factory('Location', function($cordovaGeolocation, $ionicLoading) {
