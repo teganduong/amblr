@@ -4,6 +4,8 @@ var mongoose = require('mongoose');
 var morgan = require('morgan');
 var app = module.exports = express();
 var logger = require('./config/logger.js');
+var passport = require('passport');
+
 
 var poiRouter = require('./routers/poiRouter.js');
 var userRouter = require('./routers/userRouter.js');
@@ -16,6 +18,10 @@ var env = process.env.NODE_ENV || 'production';
 
 //create connection to mongodb
 mongoose.connect(dbUri);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 
 // log db connection success or error

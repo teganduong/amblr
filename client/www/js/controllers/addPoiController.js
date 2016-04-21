@@ -1,5 +1,5 @@
 angular.module('amblr.addPOI', [])
-.controller('addPOIController', function($scope, $timeout, $http, $rootScope, $ionicModal, POIs, $location, $ionicPopup, Location) {
+.controller('addPOIController', function($scope, $timeout, $http, $rootScope, $ionicModal, POIs, $location, $ionicPopup, Location, ENV) {
 
   $ionicModal.fromTemplateUrl('../../templates/addPOI.html', {
     scope: $scope,
@@ -14,7 +14,7 @@ angular.module('amblr.addPOI', [])
   $scope.userID = null;
 
   $scope.getUserID = function() {
-    $http.get('/checkuserid')
+    $http.get(ENV.apiEndpoint + '/checkuserid')
     .success(function(data) {
       console.log(data);
       $rootScope.userID = data;
