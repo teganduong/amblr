@@ -96,4 +96,7 @@ angular.module('amblr', [
   //   controller: 'testCtrl'
   // });
   $urlRouterProvider.otherwise('/menu/home');
+
+  // allow cross origin cookies to work so we can use different ports
+  $httpProvider.defaults.withCredentials = true;
 });
