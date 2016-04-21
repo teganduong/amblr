@@ -180,6 +180,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           title: $scope.POIs[i].title,
           type: $scope.POIs[i].type,
           route: allRoutes[$scope.POIs[i].routeId],
+          userID: $scope.POIs[i].userID,
           events: {
             click: function (map, eventName, marker) {
               console.log(marker);
@@ -204,6 +205,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
               infoWindow.coords.route = marker.route;
               infoWindow.coords.id = marker.id;
               infoWindow.coords.deletePOI = $scope.deletePOI;
+              infoWindow.coords.userID = marker.userID;
               infoWindow.show = true;
             }
           },
