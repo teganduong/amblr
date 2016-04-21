@@ -6,9 +6,9 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     libraries: 'weather,geometry,visualization'
   });
 })
-.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, POIs,
+.controller('MapCtrl', function($scope, $http, $state, $cordovaGeolocation, POIs,
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
-  $window, Location, Routes, $timeout, $location, $controller) {
+  $window, Location, Routes, $timeout, $location, $controller, $rootScope, ENV) {
 
   var addPOIControllerScope = $scope.$new();
   $controller('addPOIController',{ $scope : addPOIControllerScope });
@@ -98,6 +98,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     }
   };
   
+
   /* hacks to get overlay to work */
   $scope.overlay = new $window.google.maps.OverlayView();
   $scope.overlay.draw = function() {}; // empty function required
@@ -120,6 +121,20 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     console.log('error in doing things when map is ready', err);
   });
 
+
+  $scope.userID = null;
+
+  $scope.getUserID = function() {
+    $http.get(ENV.apiEndpoint + '/checkuserid')
+    .success(function(data) {
+      $rootScope.userID = data;
+    })
+    .error(function(data) {
+      console.log('error: ' + data);
+    });
+  };
+
+  $scope.getUserID();
   /*
     Function to set the show property of the infoWindow on markers 
     that is needed when a user clicks the close of the infoWindow.
@@ -330,7 +345,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     }
     addPOIControllerScope.currentPOI.lat = $scope.dropMarker.coords.latitude;
     addPOIControllerScope.currentPOI.long = $scope.dropMarker.coords.longitude;
-    addPOIControllerScope.currentPOI.userID = $scope.userID;
+    addPOIControllerScope.currentPOI.userID = $rootScope.userID;
     addPOIControllerScope.modal.show();
     $scope.map.droppedInfoWindow.show = false;
     $scope.removeMarker();
