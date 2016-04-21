@@ -27,6 +27,18 @@ angular.module ('amblr.services', [])
       console.log('error in saving poi to databse', err);
     });
   };
+
+  POIs.deletePOI = function(poiID) {
+    var url = ENV.apiEndpoint + '/api/pois/' + poiID;
+    return $http.delete(url, {})
+              .success(function(data, status, headers, config) {
+                // console.log('POI successfully deleted!');
+              })
+              .error(function(data, status, headers, config) {
+                console.error('Error in deleting POI');
+              });
+  };
+
   return POIs;
 })
 
