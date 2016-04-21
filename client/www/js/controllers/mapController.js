@@ -182,7 +182,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           route: $scope.allRoutes[$scope.POIs[i].routeId],
           events: {
             click: function (map, eventName, marker) {
-              console.log(marker);
               var lat = marker.latitude;
               var lon = marker.longitude;
               var infoWindow = $scope.map.infoWindow;

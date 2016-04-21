@@ -12,8 +12,8 @@
         <span class="input-label">
           Rate This POI
         </span>
-          <ion-radio ng-model="currentPOI.type" value="good"><i class="icon ion-happy larger"></i></ion-radio>
-          <ion-radio ng-model="currentPOI.type" value="bad"><i class="icon ion-sad larger"></i></ion-radio>
+          <ion-radio ng-model="currentPOI.type" value="good" name="type"><i class="icon ion-happy larger"></i></ion-radio>
+          <ion-radio ng-model="currentPOI.type" value="bad"name="type"><i class="icon ion-sad larger"></i></ion-radio>
           <!-- <ion-radio ng-model="currentPOI.type" ng-value="meh">Meh</ion-radio> -->
       </label>
       <label class="item item-input item-stacked-label">
@@ -28,7 +28,7 @@
         <span class="input-label">Add to Route</span>
         <!-- <input type="text" placeholder="Add POI to a Route (optional)" ng-model="currentPOI.route"> -->
         <ion-list ng-repeat="(routeID, routeName ) in allRoutes">
-          <ion-radio ng-model="currentPOI.route" ng-value="{{ routeID }}">{{ routeName }}</ion-radio>
+          <ion-radio ng-model="currentPOI.route" ng-value="routeName" name="routes">{{ routeName }}</ion-radio>
         </ion-list>
       </label>
       <div class="row">
