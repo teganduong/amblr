@@ -8,7 +8,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 })
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation, POIs,
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
-  $window, Location, $timeout, $location, $controller) {
+  $window, Location, Routes, $timeout, $location, $controller) {
 
   var addPOIControllerScope = $scope.$new();
   $controller('addPOIController',{ $scope : addPOIControllerScope });
@@ -18,7 +18,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
   var lat = 37.786439;
   var long = -122.408199;
-
   // create dummy dropMarker, will be replaced in placeMarker function when this 
   // didn't exist, would get the following error when attempting to drop marker:
   // gMarker.key undefined and it is REQUIRED!! error 
@@ -139,30 +138,27 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     //       gets POIs in the area its in.  otherwise would need to 
     //       dynamically get them when user dragging which would be difficult
     
-    //add call to get routes here, probably before call to get POIs
-    // so that they will have access to that information to add in
-    POIs.getPOIs()
+    //call to get routes so that they will have access to that information to add in
+    var allRoutes = {};
+    Routes.getRoutes()
+    .then(function(routes) {
+      //routes returns an array of objects. 
+      //Need to loop through and create an object with the id as keys for easy look up to add to markers
+      for (let route of routes) {
+        //make key of allRoutes equal to the route's id and the value equal to the name
+        allRoutes[route._id] = route.name;
+      }
+      return allRoutes;
+    })
+    .then(function(allRoutes) {
+      return POIs.getPOIs();
+    })
+
+    // POIs.getPOIs()
     .then(function(response) {
       $scope.POIs = response.data;
      
-      // TODO: abstract the creation of markers into a function
       /*
-        Create a marker object for each one retrieved from the db.
-
-        Example marker model for markers array:
-        {
-          id: 1,
-          icon: '../../img/poi.png',
-          latitude: 37.7938494,
-          longitude: -122.419234,
-          showWindow: false,
-          options: {
-            labelContent: '[46,-77]',
-            labelAnchor: "22 0",
-            labelClass: "marker-labels"
-          }
-        }
-
         Documentation: https://angular-ui.github.io/angular-google-maps/#!/api/markers
         This is connected to the google map through the ui-gmap-markers models attribute in maps.html
       */
@@ -183,7 +179,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           description: $scope.POIs[i].description,
           title: $scope.POIs[i].title,
           type: $scope.POIs[i].type,
-          route: $scope.POIs[i].routeId,
+          route: allRoutes[$scope.POIs[i].routeId],
           events: {
             click: function (map, eventName, marker) {
               console.log(marker);

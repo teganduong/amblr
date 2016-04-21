@@ -10,11 +10,11 @@ exports.getAllRoutes = function(req, res) {
     } 
       
     // logger.info('Successfully retrieved pois: ' + pois);
-    res.json(pois); 
+    res.json(routes); 
   });
 };
 
-exports.getPOI = function(req, res) {
+exports.getRoute = function(req, res) {
 
   // Route.find({}, function(err, routes) {
   //   if (err) {
