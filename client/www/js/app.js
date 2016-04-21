@@ -14,6 +14,7 @@ angular.module('amblr', [
   'amblr.signin',
   'amblr.signup',
   'amblr.centerMap',
+  'amblr.profile',
   'ngCookies'
 ])
 .run(function($ionicPlatform, $rootScope, $location, $cookies, $state) {
@@ -89,7 +90,7 @@ angular.module('amblr', [
       }
     }
   })
-  .state('app.profile', {
+  .state('amblr.profile', {
     url: "/profile",
     views: {
       'menuContent' :{
