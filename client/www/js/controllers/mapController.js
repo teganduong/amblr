@@ -137,8 +137,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     //       gets POIs in the area its in.  otherwise would need to 
     //       dynamically get them when user dragging which would be difficult
     
-    //add call to get routes here, probably before call to get POIs
-    // so that they will have access to that information to add in
+    //call to get routes so that they will have access to that information to add in
     var allRoutes = {};
     Routes.getRoutes()
     .then(function(routes) {
@@ -180,7 +179,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           description: $scope.POIs[i].description,
           title: $scope.POIs[i].title,
           type: $scope.POIs[i].type,
-          route: $scope.POIs[i].routeId,
+          route: allRoutes[$scope.POIs[i].routeId],
           events: {
             click: function (map, eventName, marker) {
               console.log(marker);
