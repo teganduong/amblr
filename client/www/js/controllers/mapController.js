@@ -8,7 +8,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 })
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation, POIs,
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
-  $window, Location, $timeout, $location, $controller) {
+  $window, Location, Routes, $timeout, $location, $controller) {
 
   var addPOIControllerScope = $scope.$new();
   $controller('addPOIController',{ $scope : addPOIControllerScope });
@@ -140,6 +140,18 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     
     //add call to get routes here, probably before call to get POIs
     // so that they will have access to that information to add in
+    Routes.getRoutes()
+    .then(function(routes) {
+      const allRoutes = {};
+      //routes returns an array of objects. 
+      //Need to loop through and create an object with the id as keys for easy look up to add to markers
+      for (let route of routes) {
+        //make key of allRoutes equal to the route's id and the value equal to the name
+        console.log('route id in the routes array:', route._id);
+        allRoutes[route._id] = route.name;
+      }
+      console.log('this is the allRoutes object with id and name as key value pairs:', allRoutes);
+    });
     POIs.getPOIs()
     .then(function(response) {
       $scope.POIs = response.data;
