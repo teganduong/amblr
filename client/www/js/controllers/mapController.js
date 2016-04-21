@@ -150,7 +150,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
       }
       return $scope.allRoutes;
     })
-    .then(function(allRoutes) {
+    .then(function() {
       return POIs.getPOIs();
     })
 

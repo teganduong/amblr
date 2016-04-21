@@ -1,5 +1,5 @@
 angular.module('amblr.addPOI', [])
-.controller('addPOIController', function($scope, $timeout, $http, $rootScope, $ionicModal, POIs, $location, $ionicPopup, Location, ENV) {
+.controller('addPOIController', function($scope, $timeout, $http, $rootScope, $ionicModal, POIs, $location, $ionicPopup, Location, Routes, ENV) {
 
   $ionicModal.fromTemplateUrl('../../templates/addPOI.html', {
     scope: $scope,
@@ -80,8 +80,21 @@ angular.module('amblr.addPOI', [])
 
   $scope.openForm = function() {
     $scope.getUserID();
+    $scope.allRoutes = {};
     //get current position from Location factory
-    Location.getCurrentPos()
+    Routes.getRoutes()
+    .then(function(routes) {
+      //routes returns an array of objects. 
+      //Need to loop through and create an object with the id as keys for easy look up to add to markers
+      for (let route of routes) {
+        //make key of allRoutes equal to the route's id and the value equal to the name
+        $scope.allRoutes[route._id] = route.name;
+      }
+      return $scope.allRoutes;
+    })
+    .then(function() {
+      return Location.getCurrentPos();
+    })
     .then(function(pos) {
       $scope.currentPOI.lat = pos.lat;
       $scope.currentPOI.long = pos.long;

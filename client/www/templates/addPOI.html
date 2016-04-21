@@ -26,7 +26,6 @@
       </label>
       <label class="item item-input item-stacked-label">
         <span class="input-label">Add to Route</span>
-        <!-- <input type="text" placeholder="Add POI to a Route (optional)" ng-model="currentPOI.route"> -->
         <ion-list ng-repeat="(routeID, routeName ) in allRoutes">
           <ion-radio ng-model="currentPOI.route" ng-value="routeName" name="routes">{{ routeName }}</ion-radio>
         </ion-list>
