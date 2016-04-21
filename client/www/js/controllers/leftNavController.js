@@ -1,13 +1,11 @@
 angular.module('amblr.leftnav', ['ngDraggable'])
-.controller('LeftMenuNav', function($scope, $ionicSideMenuDelegate, $http, $rootScope) {
+.controller('LeftMenuNav', function($scope, $ionicSideMenuDelegate, $http, $rootScope, ENV) {
 
   $scope.loggedIn = false;
   
   $scope.isLoggedIn = function() {
-
-    $http.get('/checklogin')
+    $http.get(ENV.apiEndpoint + '/checklogin')
       .success(function(data) {
-        console.log(data);
         $rootScope.loggedIn = data;
       })
       .error(function(data) {

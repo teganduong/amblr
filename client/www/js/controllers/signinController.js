@@ -28,23 +28,31 @@ angular.module('amblr.signin', [])
 
   // Perform the signin action when the user submits the signin form
   $scope.doSignin = function() {
-    console.log('Doing signin with username: ', $scope.signinData.username);    
-    $http({
-      method: 'POST',
-      url: ENV.apiEndpoint + '/api/users/signin',
-      data: $scope.signinData
-    })
-    .then(function(res) {
-      $scope.closeSignin();
-      if (res.status === 200) { 
-        $location.path('/menu/home');
-      } 
-    }, function(err) {
-      $scope.showAlert(); // if sign in is not successful, show alert message
-      console.log('Error during signin with username: ', $scope.signinData.username);  
-      console.dir(err);
-      return err;
-    });
+    console.log('Doing signin with username: ', $scope.signinData.username);
+    if(!$scope.signinData.password) {
+      $ionicPopup.alert({
+        title: 'Error',
+        template: 'You gotta put in a password, man.'
+      })
+    } else {
+      
+      $http({
+        method: 'POST',
+        url: ENV.apiEndpoint + '/api/users/signin',
+        data: $scope.signinData
+      })
+      .then(function(res) {
+        $scope.closeSignin();
+        if (res.status === 200) { 
+          $location.path('/menu/home');
+        } 
+      }, function(err) {
+        $scope.showAlert(); // if sign in is not successful, show alert message
+        console.log('Error during signin with username: ', $scope.signinData.username);  
+        console.dir(err);
+        return err;
+      });
+    }
 
   };
 });
