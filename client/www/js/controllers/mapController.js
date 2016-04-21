@@ -332,21 +332,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     addPOIControllerScope.modal.show();
     $scope.map.droppedInfoWindow.show = false;
     $scope.removeMarker();
-    
-    //  POIs.savePOI($scope.currentPOI)
-    //   .then(function(poi) {
-    //     console.log('poi saved', poi);
-    //     //clear out currentPOI
-    //     $scope.map.droppedInfoWindow.show = false;
-    //     $scope.resetPOI();
-
-    //     // $window.location.reload();
-    //     $scope.removeMarker();
-    //     $scope.addNewPOIs();
-    //   })
-    //   .catch(function(err) {
-    //     console.log('error in saving poi to database', err);
-    //   });
   };
   
   $scope.$on('newMarkerDrop', function(event, x, y) {
