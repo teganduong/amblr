@@ -6,9 +6,12 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     libraries: 'weather,geometry,visualization'
   });
 })
-.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, POIs, Routes,
+.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, POIs,
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
-  $window, Location, $timeout, $location) {
+  $window, Location, $timeout, $location, $controller) {
+
+  var addPOIControllerScope = $scope.$new();
+  $controller('addPOIController',{ $scope : addPOIControllerScope });
 
   $scope.POIs = [];
 
@@ -21,26 +24,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $scope.dropMarker = {
     id: 0
   };
-  $scope.dropControl = {};
-  // $scope.currentPOI = {
-  //   lat: -1,
-  //   long: -1,
-  //   type: '',
-  //   description: '',
-  //   title: ''
-  // };
-
-  $scope.resetPOI = function () {
-    $scope.currentPOI = {
-      lat: -1,
-      long: -1,
-      type: 'good',
-      description: '',
-      title: ''
-    };
-  };
-  // sets a default POI
-  $scope.resetPOI();
+    $scope.dropControl = {};
 
   $scope.map = {
     center: {
@@ -110,10 +94,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           pixelOffset: new $window.google.maps.Size(0, -35),
         },
         show: false,
-        templateUrl: '../../templates/addPOIInfoWindow.html',
-        templateParameter: {
-          currentPOI: $scope.currentPOI
-        },
+        templateUrl: '../../templates/addPOIInfoWindow.html'
     }
   };
   
@@ -156,7 +137,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     //       should add a button when map is dragged to update map that
     //       gets POIs in the area its in.  otherwise would need to 
     //       dynamically get them when user dragging which would be difficult
-
+    
     //add call to get routes here, probably before call to get POIs
     // so that they will have access to that information to add in
     POIs.getPOIs()
@@ -206,6 +187,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           route: $scope.POIs[i].routeId,
           events: {
             click: function (map, eventName, marker) {
+              console.log(marker);
               var lat = marker.latitude;
               var lon = marker.longitude;
               var infoWindow = $scope.map.infoWindow;
@@ -315,16 +297,11 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
             //update droppedInfoWindow lat/long
             $scope.map.droppedInfoWindow.coords.latitude = marker.position.lat();
             $scope.map.droppedInfoWindow.coords.longitude = marker.position.lng();
-            $scope.currentPOI.latitude = marker.position.lat();
-            $scope.currentPOI.longitude = marker.position.lng();
-
           },
           click: function(marker, eventName, args) {
             // set the lat/long of the InfoWindow to the marker clicked on
             $scope.map.droppedInfoWindow.coords.latitude = marker.position.lat();
             $scope.map.droppedInfoWindow.coords.longitude = marker.position.lng();
-            $scope.currentPOI.lat= marker.position.lat();
-            $scope.currentPOI.long = marker.position.lng();
             $scope.map.droppedInfoWindow.show = true;
           }
         }
@@ -348,20 +325,16 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     delete $scope.placeMarkerPromise;
   };
 
-  $scope.savePOI = function() {
-     POIs.savePOI($scope.currentPOI)
-      .then(function(poi) {
-        //clear out currentPOI
-        $scope.map.droppedInfoWindow.show = false;
-        $scope.resetPOI();
-
-        // $window.location.reload();
-        $scope.removeMarker();
-        $scope.addNewPOIs();
-      })
-      .catch(function(err) {
-        console.log('error in saving poi to database', err);
-      });
+  $scope.saveDropMarkerPOI = function() {
+    if (!$scope.dropMarker) {
+      $scope.removeMarker();
+    }
+    addPOIControllerScope.currentPOI.lat = $scope.dropMarker.coords.latitude;
+    addPOIControllerScope.currentPOI.long = $scope.dropMarker.coords.longitude;
+    addPOIControllerScope.currentPOI.userID = $scope.userID;
+    addPOIControllerScope.modal.show();
+    $scope.map.droppedInfoWindow.show = false;
+    $scope.removeMarker();
   };
   
   $scope.$on('newMarkerDrop', function(event, x, y) {
