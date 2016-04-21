@@ -127,3 +127,19 @@ exports.getAllPOI = function(req, res) {
     res.json(pois); 
   });
 };
+
+exports.deletePOI = function(req, res) {
+  var poiID = req.params.id;
+  POI.remove({_id: poiID}, function(err) {
+    if (err) {
+      logger.error('ERROR in delete: ', err);
+      res.status(404);
+      res.end();
+      return;
+    }
+    
+    res.status(200);
+    res.end();
+  });
+};
+

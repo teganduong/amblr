@@ -14,6 +14,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $controller('addPOIController',{ $scope : addPOIControllerScope });
 
   $scope.POIs = [];
+  $scope.markers = [];
 
   var lat = 37.786439;
   var long = -122.408199;
@@ -143,8 +144,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     POIs.getPOIs()
     .then(function(response) {
       $scope.POIs = response.data;
-
-      var markers = [];
      
       // TODO: abstract the creation of markers into a function
       /*
@@ -176,8 +175,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
            icon = '../../img/pirates.png'
         }
 
-        markers.push({
-          id: i,
+        $scope.markers.push({
+          id: $scope.POIs[i]._id,
           latitude: $scope.POIs[i].lat,
           longitude: $scope.POIs[i].long,
           icon: icon,
@@ -207,13 +206,15 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
               infoWindow.coords.type = marker.type;
               infoWindow.coords.description = marker.description;
               infoWindow.coords.route = marker.route;
+              infoWindow.coords.id = marker.id;
+              infoWindow.coords.deletePOI = $scope.deletePOI;
               infoWindow.show = true;
             }
           },
         });
       }
 
-      $scope.map.POIMarkers = markers;
+      $scope.map.POIMarkers = $scope.markers;
 
     })
     .catch(function(err) {
@@ -342,6 +343,19 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     $scope.placeMarker(geocoords);
     google.maps.event.trigger($scope.dropControl.getGMarkers()[0], 'click');
   });
+
+  $scope.deletePOI = function (poiID) {
+    POIs.deletePOI(poiID);
+    $scope.map.infoWindow.show = false;
+    $scope.removeMarker();
+
+    for (var i = 0; i < $scope.map.POIMarkers.length; i++) {
+      if ($scope.map.POIMarkers[i].id === poiID) {
+        $scope.map.POIMarkers.splice(i, 1);
+        break;
+      }
+    }
+  };
 
 });
 
