@@ -73,4 +73,8 @@ exports.signoutUser = function(req, res) {
   res.redirect('/');
 };
 
+exports.getUser = function(req, res) {
+  // TODO
+};
+
 
