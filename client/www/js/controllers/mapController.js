@@ -14,7 +14,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $controller('addPOIController',{ $scope : addPOIControllerScope });
 
   $scope.POIs = [];
-  $scope.markers = [];
 
   var lat = 37.786439;
   var long = -122.408199;
@@ -156,8 +155,9 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
     // POIs.getPOIs()
     .then(function(response) {
+      
+      var markers = [];
       $scope.POIs = response.data;
-     
       /*
         Documentation: https://angular-ui.github.io/angular-google-maps/#!/api/markers
         This is connected to the google map through the ui-gmap-markers models attribute in maps.html
@@ -171,7 +171,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
            icon = '../../img/pirates.png'
         }
 
-        $scope.markers.push({
+        markers.push({
           id: $scope.POIs[i]._id,
           latitude: $scope.POIs[i].lat,
           longitude: $scope.POIs[i].long,
@@ -182,7 +182,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           route: allRoutes[$scope.POIs[i].routeId],
           events: {
             click: function (map, eventName, marker) {
-              console.log(marker);
               var lat = marker.latitude;
               var lon = marker.longitude;
               var infoWindow = $scope.map.infoWindow;
@@ -210,7 +209,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         });
       }
 
-      $scope.map.POIMarkers = $scope.markers;
+      $scope.map.POIMarkers = markers;
 
     })
     .catch(function(err) {
@@ -240,7 +239,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $scope.$on('centerMap', function () {
     $scope.setMapCenterCurrent();
   });
-  $scope.$on('reloadPOIs', function() {
+  $scope.$on('reloadPOIs', function () {
     $scope.addNewPOIs();
   });
 
