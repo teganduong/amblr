@@ -27,8 +27,8 @@
       <label class="item item-input item-stacked-label">
         <span class="input-label">Add to Route</span>
         <!-- <input type="text" placeholder="Add POI to a Route (optional)" ng-model="currentPOI.route"> -->
-        <ion-list ng-repeat="route in ['route1','route2','route3'] track by $index">
-          <ion-radio ng-model="add-route-list" ng-value="{{ $index }}">{{ route }}</ion-radio>
+        <ion-list ng-repeat="(routeID, routeName ) in allRoutes">
+          <ion-radio ng-model="currentPOI.route" ng-value="{{ routeID }}">{{ routeName }}</ion-radio>
         </ion-list>
       </label>
       <div class="row">

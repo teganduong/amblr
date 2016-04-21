@@ -139,16 +139,16 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     //       dynamically get them when user dragging which would be difficult
     
     //call to get routes so that they will have access to that information to add in
-    var allRoutes = {};
+    $scope.allRoutes = {};
     Routes.getRoutes()
     .then(function(routes) {
       //routes returns an array of objects. 
       //Need to loop through and create an object with the id as keys for easy look up to add to markers
       for (let route of routes) {
         //make key of allRoutes equal to the route's id and the value equal to the name
-        allRoutes[route._id] = route.name;
+        $scope.allRoutes[route._id] = route.name;
       }
-      return allRoutes;
+      return $scope.allRoutes;
     })
     .then(function(allRoutes) {
       return POIs.getPOIs();
@@ -179,7 +179,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           description: $scope.POIs[i].description,
           title: $scope.POIs[i].title,
           type: $scope.POIs[i].type,
-          route: allRoutes[$scope.POIs[i].routeId],
+          route: $scope.allRoutes[$scope.POIs[i].routeId],
           events: {
             click: function (map, eventName, marker) {
               console.log(marker);
