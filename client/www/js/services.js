@@ -12,9 +12,19 @@ angular.module ('amblr.services', [])
     return $http.get(ENV.apiEndpoint + '/api/pois/')
     .then(function (pois) {
       self.inMemoryPOIs = pois.data;
+      
       /* filter POIs here for display */
       if (self.routeFilter) {
-        pois.data = $filter('filter')(pois.data, { 'routeId': self.routeFilter });
+        /* build object containing all IDs of POIs in current route */      
+        var objectIDs = self.routeFilter.POIs.reduce(function (accumulator, element) {
+          accumulator[element] = true;
+          return accumulator;
+        }, {});
+        
+        pois.data = pois.data.filter(function (element) {
+          return (objectIDs[element['_id']]);
+        });
+        console.log(pois.data);
       }
       return pois;
     })
