@@ -14,6 +14,7 @@ angular.module('amblr', [
   'amblr.signin',
   'amblr.signup',
   'amblr.centerMap',
+  'amblr.routeFilter',
   'ngCookies'
 ])
 .run(function($ionicPlatform, $rootScope, $location, $cookies, $state) {
