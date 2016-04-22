@@ -13,6 +13,12 @@
           {{ route }}
         </div>
       </div>
+      <div class="item">
+        My POIs:
+        <div class="item" ng-repeat="poi in myPOIs" ng-click="$parent.setUserRoute(route._id)">
+          {{ poi.title }}
+        </div>
+      </div>
     </div>
   </ion-content>
 </ion-modal-view>

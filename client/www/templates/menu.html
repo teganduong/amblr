@@ -38,10 +38,10 @@ enable-menu-with-back-views attribute -->
           <a class='item' menu-close ng-show='loggedIn' ng-click='showUserProfileModal()' ng-controller="ProfileCtrl">Profile</a>
         </li>
         <li>
-          <a class='item' ng-show='loggedIn' menu-close href='/api/users/signout'>Sign Out</a>
+          <a class='item' menu-close ng-show='loggedIn' ng-click='showFilterModal()' ng-controller="routeFilter">Filter POIs by Route</a>
         </li>
         <li>
-          <a class='item' menu-close ng-show='loggedIn' ng-click='showFilterModal()' ng-controller="routeFilter">Filter POIs by Route</a>
+          <a class='item' ng-show='loggedIn' menu-close href='/api/users/signout'>Sign Out</a>
         </li>
       </ul>
     </ion-content>

@@ -69,21 +69,21 @@ angular.module ('amblr.services', [])
   return Routes;
 })
 
-.factory('Users', function($http, $rootScope, ENV) {
-  var Users = {};
+.factory('User', function($http, $rootScope, ENV) {
+  var User = {};
 
-  Users.getUserById = function(userID) {
-    var url = ENV.apiEndpoint + '/api/users/' + userID;
-    return $http.get(url, {})
-      .success(function(data, status, headers, config) {
-        console.log('User successfully retrieved: ', data);
-      })
-      .error(function(data, status, headers, config) {
-        console.error('Error in getting user: ', data);
-      });
+  User.getUserID = function() {
+    return $http.get(ENV.apiEndpoint + '/checkuserid')
+    .success(function(data) {
+      console.log('UserID successfully retrieved: ', data);
+      $rootScope.userID = data;
+    })
+    .error(function(data) {
+      console.log('error: ' + data);
+    });
   };
 
-  return Users;
+  return User;
 })
 
 .factory('Location', function($cordovaGeolocation, $ionicLoading) {
