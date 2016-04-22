@@ -1,5 +1,24 @@
 angular.module('amblr.addPOI', [])
-.controller('addPOIController', function($scope, $timeout, $http, $rootScope, $ionicModal, POIs, $location, $ionicPopup, Location, ENV) {
+.controller('addPOIController', function($scope, $timeout, $http, $rootScope, $ionicModal, POIs, $location, $ionicPopup, Location, Routes, ENV) {
+
+  // a boolean to show or hide the 'Add new route' text field;
+  $scope.addNewRoute = false;
+
+  //for showing list of routes
+  $scope.addToRoute = false;
+  
+  $scope.handleNewRoute = function(state) {
+    //state sets whether or not to show the new route text box
+    $scope.addNewRoute = state;
+  }
+
+  $scope.showRoutes = function() {
+    $scope.addToRoute = !$scope.addToRoute;
+    if(!$scope.addToRoute) {
+      $scope.addNewRoute = false;
+      $scope.currentPOI.route = {};
+    }
+  }
 
   $ionicModal.fromTemplateUrl('../../templates/addPOI.html', {
     scope: $scope,
@@ -11,7 +30,20 @@ angular.module('amblr.addPOI', [])
     $scope.modal = modal;
   });
 
-  //current POI is an object with properties: lat, long, type, description, title
+  $scope.userID = null;
+
+  $scope.getUserID = function() {
+    $http.get(ENV.apiEndpoint + '/checkuserid')
+    .success(function(data) {
+      $rootScope.userID = data;
+    })
+    .error(function(data) {
+      console.log('error: ' + data);
+    });
+  };
+
+
+  //current POI is an object with properties: lat, long, type, description, title, route
   //set default of type to good
   $scope.selected = 'good';
   $scope.currentPOI = { 
@@ -60,18 +92,35 @@ angular.module('amblr.addPOI', [])
   };
 
   $scope.cancelPOI = function() {
-    $scope.currentPOI = { type: 'good'};
+    $scope.currentPOI = { type: 'good', route: {}};
     $scope.closeForm();
     $location.path('/menu/home');
   };
 
   $scope.openForm = function() {
+
+    $scope.getUserID();
+    $scope.allRoutes = {};
+
     //get current position from Location factory
-    Location.getCurrentPos()
+    Routes.getRoutes()
+    .then(function(routes) {
+      //routes returns an array of objects. 
+      //Need to loop through and create an object with the id as keys for easy look up to add to markers
+      for (let route of routes) {
+        //make key of allRoutes equal to the route's id and the value equal to the name
+        $scope.allRoutes[route._id] = route.name;
+      }
+      return $scope.allRoutes;
+    })
+    .then(function() {
+      return Location.getCurrentPos();
+    })
     .then(function(pos) {
       $scope.currentPOI.lat = pos.lat;
       $scope.currentPOI.long = pos.long;
       $scope.currentPOI.userID = $rootScope.userID;
+      $scope.currentPOI.route = {};
       //once position is found, open up modal form
       $scope.modal.show();
     })
@@ -88,6 +137,8 @@ angular.module('amblr.addPOI', [])
 
   //close POI form
   $scope.closeForm = function() {
+    $scope.currentPOI.route = {};
+    $scope.addToRoute = false;
     $scope.modal.hide();
   };
   //toggles View of modal form depending on state
