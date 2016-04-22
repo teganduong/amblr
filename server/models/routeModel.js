@@ -6,6 +6,7 @@ var routeSchema = mongoose.Schema({
   userID: {type: String},
   lat: {type: Number},
   long: {type: Number},
+  POIs: {type: [] },
 });
 
 routeSchema.plugin(timestamps);
