@@ -11,19 +11,6 @@ angular.module('amblr.addPOI', [])
     $scope.modal = modal;
   });
 
-  $scope.userID = null;
-
-  $scope.getUserID = function() {
-    $http.get(ENV.apiEndpoint + '/checkuserid')
-    .success(function(data) {
-      $rootScope.userID = data;
-    })
-    .error(function(data) {
-      console.log('error: ' + data);
-    });
-  };
-
-
   //current POI is an object with properties: lat, long, type, description, title
   //set default of type to good
   $scope.selected = 'good';
@@ -79,7 +66,6 @@ angular.module('amblr.addPOI', [])
   };
 
   $scope.openForm = function() {
-    $scope.getUserID();
     //get current position from Location factory
     Location.getCurrentPos()
     .then(function(pos) {
