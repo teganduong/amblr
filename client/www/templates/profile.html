@@ -1,12 +1,17 @@
-<ion-modal-view class="userProfile">
-  <ion-content class="has-header" ng-controller="ProfileCtrl">
-    <div class="list card">
-      <div class="item">
-        <h2>{{currentUser.username}}</h2>
-        <p>{{currentUser.email}}</p>
-      </div>
-      <div class="item item-body">
-          <h3>My POIs: {{pois}}</h3>
+<ion-modal-view class="userProfile" ng-controller="ProfileCtrl">
+  <div class="bar bar-header bar-dark">
+    <h1 class="title">My Profile</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="hideUserProfileModal()">Cancel</button>
+    </div>
+  </div>
+  <ion-content class="has-header">
+    <div class="list list-inset">
+      <div class="item" ng-click="setUserRoute(null)">
+        My POIs:
+        <div class="item" ng-repeat="route in myRoutes" ng-click="$parent.setUserRoute(route._id)">
+          {{ route }}
+        </div>
       </div>
     </div>
   </ion-content>
