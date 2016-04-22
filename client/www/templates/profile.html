@@ -9,7 +9,7 @@
     <div class="list list-inset">
       <div class="item" ng-click="setUserRoute(null)">
         My Routes:
-        <div class="item" ng-repeat="route in myRoutes" ng-click="$parent.setUserRoute(route._id)">
+        <div class="item" ng-repeat="route in myRoutes | unique: 'name'" ng-click="$parent.setUserRoute(route._id)">
           {{ route.name }}
         </div>
       </div>

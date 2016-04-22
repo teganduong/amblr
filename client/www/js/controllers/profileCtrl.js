@@ -1,5 +1,5 @@
 angular.module('amblr.profile', [])
-  .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, User, Routes, POIs) {
+  .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $filter, User, Routes, POIs) {
 
     $scope.allRoutes = [];
     $scope.allPOIs = [];
