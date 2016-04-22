@@ -72,5 +72,3 @@ exports.signoutUser = function(req, res) {
   req.logout();
   res.redirect('/');
 };
-
-

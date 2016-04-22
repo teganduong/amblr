@@ -197,7 +197,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           type: $scope.POIs[i].type,
           route: $scope.allRoutes[$scope.POIs[i].routeId],
           userID: $scope.POIs[i].userID,
-
           events: {
             click: function (map, eventName, marker) {
               var lat = marker.latitude;
