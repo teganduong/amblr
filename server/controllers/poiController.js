@@ -65,9 +65,10 @@ exports.savePOI = function(req, res) {
 
   //check if the new POI has a route
   if (req.body['route']) {
-    var newRoute = {name: req.body['route'],
-                    userID: req.body.userID,
-                    POIs: []};
+    var newRoute = {
+      name: req.body['route'],
+      userID: req.body.userID
+    };
 
     // if there is a route, once we extract and save it from body, check db
     Route.findOneAsync(newRoute)
