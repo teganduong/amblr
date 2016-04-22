@@ -325,9 +325,11 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     if (!$scope.dropMarker) {
       $scope.removeMarker();
     }
+
     addPOIControllerScope.currentPOI.lat = $scope.dropMarker.coords.latitude;
     addPOIControllerScope.currentPOI.long = $scope.dropMarker.coords.longitude;
     addPOIControllerScope.currentPOI.userID = $scope.userID;
+    addPOIControllerScope.currentPOI.route = {};
     addPOIControllerScope.modal.show();
     $scope.map.droppedInfoWindow.show = false;
     $scope.removeMarker();
