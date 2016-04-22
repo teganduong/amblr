@@ -1,4 +1,4 @@
-<ion-modal-view class="userProfile" ng-controller="ProfileCtrl">
+<ion-modal-view class="userProfile">
   <div class="bar bar-header bar-dark">
     <h1 class="title">My Profile</h1>
     <div class="buttons">
@@ -15,8 +15,9 @@
       </div>
       <div class="item">
         My POIs:
-        <div class="item" ng-repeat="poi in myPOIs" ng-click="$parent.setUserRoute(route._id)">
+        <div class="item" ng-repeat="poi in myPOIs">
           {{ poi.title }}
+          <p> Description: {{ poi.description }}</p>
         </div>
       </div>
     </div>

@@ -1,19 +1,11 @@
 angular.module('amblr.profile', [])
   .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, User, Routes, POIs) {
-    var currentUserID = User.getUserID();
-    console.log('currentUserID: ', currentUserID);
-    // dummy data 
-    $scope.currentUser = {
-      username: 'tegan',
-      email: 'something@gmail.com'
-    };
 
     $scope.allRoutes = [];
     $scope.allPOIs = [];
 
     // routes created by user
-    $scope.myRoutes = ['route1'];
-    $scope.myRoute;
+    $scope.myRoutes = [];
 
     // POIs created by user
     $scope.myPOIs = [];
@@ -29,16 +21,15 @@ angular.module('amblr.profile', [])
       $scope.showUserProfileModal = function () {
         Routes.getRoutes().then(function (routes) {
           $scope.allRoutes = routes;
-          console.log('allRoutes: ', $scope.allRoutes);
-          $scope.modal.show();
+          console.log('allRoutes retrieved: ', $scope.allRoutes);
         });
 
         POIs.getPOIs().then(function(pois) {
           $scope.allPOIs = pois.data;
           console.log('allPOIs retrieved: ', $scope.allPOIs);
-          for (var i = 0; i < pois.length; i++) {
-            var poi = pois[i];
-            if (poi.userID === currentUserID) {
+          for (var i = 0; i < $scope.allPOIs.length; i++) {
+            var poi = $scope.allPOIs[i];
+            if (poi.userID === $rootScope.userID) {
               $scope.myPOIs.push(poi);
             }
           }

@@ -91,21 +91,7 @@ angular.module('amblr', [
       }
     }
   })
-  // .state('amblr.profile', {
-  //   url: "/:id/profile",
-  //   views: {
-  //     'view-content' :{
-  //         templateUrl: "templates/profile.html",
-  //         controller: "ProfileCtrl"
-  //     }
-  //   }
-  // })
-  //to delete after testing.  use for data point entry
-  // .state('dataEntry', {
-  //   url: '/test',
-  //   templateUrl: 'testIndex.html',
-  //   controller: 'testCtrl'
-  // });
+  
   $urlRouterProvider.otherwise('/menu/home');
 
   // allow cross origin cookies to work so we can use different ports

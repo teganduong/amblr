@@ -77,6 +77,7 @@ angular.module ('amblr.services', [])
     .success(function(data) {
       console.log('UserID successfully retrieved: ', data);
       $rootScope.userID = data;
+      return $rootScope.userID;
     })
     .error(function(data) {
       console.log('error: ' + data);
