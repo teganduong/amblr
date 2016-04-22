@@ -98,8 +98,10 @@ angular.module('amblr.addPOI', [])
   };
 
   $scope.openForm = function() {
+
     $scope.getUserID();
     $scope.allRoutes = {};
+
     //get current position from Location factory
     Routes.getRoutes()
     .then(function(routes) {

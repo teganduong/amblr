@@ -14,6 +14,7 @@ angular.module('amblr', [
   'amblr.signin',
   'amblr.signup',
   'amblr.centerMap',
+  'amblr.routeFilter',
   'ngCookies'
 ])
 .run(function($ionicPlatform, $rootScope, $location, $cookies, $state) {
@@ -96,4 +97,7 @@ angular.module('amblr', [
   //   controller: 'testCtrl'
   // });
   $urlRouterProvider.otherwise('/menu/home');
+
+  // allow cross origin cookies to work so we can use different ports
+  $httpProvider.defaults.withCredentials = true;
 });
