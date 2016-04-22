@@ -67,9 +67,10 @@ angular.module ('amblr.services', [])
       });
     };
   
-  Routes.getOneRoute = function() {
-    return $http.get(ENV.apiEndpoint + '/api/route/:_id')
+  Routes.getOneRoute = function(routeId) {
+    return $http.get(ENV.apiEndpoint + '/api/routes/' + routeId)
       .then(function(route) {
+        console.log('here is the route data: ', route.data);
         return route.data;
       })
       .catch(function(err) {
@@ -77,7 +78,8 @@ angular.module ('amblr.services', [])
       });
   };
 
-  Routes.getDirections = function(routeID) {
+  Routes.getDirections = function(routeId) {
+    this.getOneRoute(routeId);
     uiGmapIsReady.promise()
     .then(function (instances) {        
       //for testing directions
