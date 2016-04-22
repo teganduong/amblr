@@ -66,51 +66,61 @@ angular.module ('amblr.services', [])
         console.log('error in getting routes in services.js: ', err);
       });
     };
-
-    Routes.getDirections = function() {
-      uiGmapIsReady.promise()
-      .then(function (instances) {        
-        //for testing directions
-        mapInstance = instances[0].map;
-
-        uiGmapGoogleMapApi.then(function (maps) {
-                        $rootScope.directionsDisplay = new maps.DirectionsRenderer();
-                    });
-        //end for directions
-
-      })
-      .then(function() {
-        //testing directionsService
-
-        var directionsService = new google.maps.DirectionsService();
-
-        var directionsRequest = {
-          origin: '747 Howard Street, San Francisco, CA',
-          destination: '982 Market Street, San Francisco, CA',
-          travelMode: google.maps.DirectionsTravelMode.WALKING,
-          unitSystem: google.maps.UnitSystem.METRIC
-        };
-
-        directionsService.route(
-          directionsRequest,
-          function(response, status)
-          {
-            if (status == google.maps.DirectionsStatus.OK)
-            {
-             $rootScope.directionsDisplay.setMap(mapInstance);
-             $rootScope.directionsDisplay.setOptions({ suppressMarkers: true, preserveViewport: true});
-             $rootScope.directionsDisplay.setDirections(response);
-              
-            }
-            else
-              console.log('there was an error', response);
-          }
-        );
+  
+  Routes.getOneRoute = function() {
+    return $http.get(ENV.apiEndpoint + '/api/route/:_id')
+      .then(function(route) {
+        return route.data;
       })
       .catch(function(err) {
-        console.log('error in doing things when map is ready', err);
+        console.log('error in getting routes in services.js: ', err);
       });
-    };
+  };
+
+  Routes.getDirections = function(routeID) {
+    uiGmapIsReady.promise()
+    .then(function (instances) {        
+      //for testing directions
+      mapInstance = instances[0].map;
+
+      uiGmapGoogleMapApi.then(function (maps) {
+                      $rootScope.directionsDisplay = new maps.DirectionsRenderer();
+                  });
+      //end for directions
+
+    })
+    .then(function() {
+      //testing directionsService
+
+      var directionsService = new google.maps.DirectionsService();
+
+      var directionsRequest = {
+        origin: '747 Howard Street, San Francisco, CA',
+        destination: '982 Market Street, San Francisco, CA',
+        travelMode: google.maps.DirectionsTravelMode.WALKING,
+        unitSystem: google.maps.UnitSystem.METRIC
+      };
+
+      directionsService.route(
+        directionsRequest,
+        function(response, status)
+        {
+          if (status == google.maps.DirectionsStatus.OK)
+          {
+           $rootScope.directionsDisplay.setMap(mapInstance);
+           $rootScope.directionsDisplay.setOptions({ suppressMarkers: true, preserveViewport: true});
+           $rootScope.directionsDisplay.setDirections(response);
+            
+          }
+          else
+            console.log('there was an error', response);
+        }
+      );
+    })
+    .catch(function(err) {
+      console.log('error in doing things when map is ready', err);
+    });
+  };
 
   return Routes;
 })
