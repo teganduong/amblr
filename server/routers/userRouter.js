@@ -7,7 +7,5 @@ var userController = require('../controllers/userController.js');
 userRouter.route('/signup').post(userController.signupUser);
 userRouter.route('/signin').post(userController.signinUser);
 userRouter.route('/signout').get(userController.signoutUser);
-userRouter.route('/').get(userController.getAllUsers);
-userRouter.route('/:id').get(userController.getUser);
 
 module.exports = userRouter;
