@@ -110,8 +110,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     $scope.overlay.setMap(instances[0].map);
     
     //for testing directions
-    theMap = instances[0].map;
-    $scope.mapRef = $scope.map.control.getGMap();
+    mapInstance = instances[0].map;
 
     uiGmapGoogleMapApi.then(function (maps) {
                     $scope.directionsDisplay = new maps.DirectionsRenderer();
@@ -130,7 +129,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     //testing directionsService
 
     var directionsService = new google.maps.DirectionsService();
-    var directionsDisplay = new google.maps.DirectionsRenderer();
 
     var directionsRequest = {
       origin: '747 Howard Street, San Francisco, CA',
@@ -145,9 +143,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
       {
         if (status == google.maps.DirectionsStatus.OK)
         {
-          // directionsDisplay.setDirections(response);
-         $scope.directionsDisplay.setMap(theMap);
-         $scope.directionsDisplay.setOptions({ suppressMarkers: true });
+         $scope.directionsDisplay.setMap(mapInstance);
+         $scope.directionsDisplay.setOptions({ suppressMarkers: true, preserveViewport: true });
          $scope.directionsDisplay.setDirections(response);
           
         }
