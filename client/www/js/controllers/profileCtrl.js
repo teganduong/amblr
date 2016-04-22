@@ -22,11 +22,19 @@ angular.module('amblr.profile', [])
         Routes.getRoutes().then(function (routes) {
           $scope.allRoutes = routes;
           console.log('allRoutes retrieved: ', $scope.allRoutes);
+
+          for (var r = 0; r < $scope.allRoutes.length; r++) {
+            var route = $scope.allRoutes[r];
+            if (route.userID === $rootScope.userID) {
+              $scope.myRoutes.push(route);
+            }
+          }
         });
 
         POIs.getPOIs().then(function(pois) {
           $scope.allPOIs = pois.data;
           console.log('allPOIs retrieved: ', $scope.allPOIs);
+
           for (var i = 0; i < $scope.allPOIs.length; i++) {
             var poi = $scope.allPOIs[i];
             if (poi.userID === $rootScope.userID) {

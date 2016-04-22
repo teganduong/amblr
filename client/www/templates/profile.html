@@ -10,7 +10,7 @@
       <div class="item" ng-click="setUserRoute(null)">
         My Routes:
         <div class="item" ng-repeat="route in myRoutes" ng-click="$parent.setUserRoute(route._id)">
-          {{ route }}
+          {{ route.name }}
         </div>
       </div>
       <div class="item">
