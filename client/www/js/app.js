@@ -15,6 +15,7 @@ angular.module('amblr', [
   'amblr.signup',
   'amblr.centerMap',
   'amblr.routeFilter',
+  'amblr.routeManage',
   'amblr.profile',
   'ngCookies'
 ])
