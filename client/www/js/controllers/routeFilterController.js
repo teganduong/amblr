@@ -29,5 +29,6 @@ angular.module('amblr.routeFilter', [])
       POIs.setRouteFilter(routeID);
       $rootScope.$broadcast('reloadPOIs');
       $scope.modal.hide();
+      Routes.getDirections();
     }
   });

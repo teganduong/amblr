@@ -66,6 +66,11 @@ angular.module ('amblr.services', [])
         console.log('error in getting routes in services.js: ', err);
       });
     };
+
+    Routes.getDirections = function() {
+      console.log('we are going to show some directions!');
+    };
+
   return Routes;
 })
 
