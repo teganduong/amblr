@@ -73,6 +73,19 @@ exports.signoutUser = function(req, res) {
   res.redirect('/');
 };
 
+exports.getAllUsers = function(req, res) {
+
+  User.find({}, function(err, users) {
+    if (err) {
+      logger.error('ERROR in retrieving all users: ', err);
+      return res.json(err);
+    } 
+      
+    // logger.info('Successfully retrieved pois: ' + pois);
+    res.json(users); 
+  });
+};
+
 exports.getUser = function(req, res) {
   // TODO
 };

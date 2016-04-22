@@ -91,15 +91,15 @@ angular.module('amblr', [
       }
     }
   })
-  .state('amblr.profile', {
-    url: "/profile",
-    views: {
-      'menuContent' :{
-          templateUrl: "templates/profile.html",
-          controller: "ProfileCtrl"
-      }
-    }
-  })
+  // .state('amblr.profile', {
+  //   url: "/:id/profile",
+  //   views: {
+  //     'view-content' :{
+  //         templateUrl: "templates/profile.html",
+  //         controller: "ProfileCtrl"
+  //     }
+  //   }
+  // })
   //to delete after testing.  use for data point entry
   // .state('dataEntry', {
   //   url: '/test',

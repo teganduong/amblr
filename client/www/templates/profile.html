@@ -1,13 +1,13 @@
-<ion-view title="Profile">
-    <ion-content class="has-header">
-        <div class="list card">
-            <div class="item">
-                <h2>{{user.username}}</h2>
-                <p>{{user.email}}</p>
-            </div>
-            <div class="item item-body">
-                <img src=""/>
-            </div>
-        </div>
-    </ion-content>
-</ion-view>
+<ion-modal-view class="userProfile">
+  <ion-content class="has-header" ng-controller="ProfileCtrl">
+    <div class="list card">
+      <div class="item">
+        <h2>{{currentUser.username}}</h2>
+        <p>{{currentUser.email}}</p>
+      </div>
+      <div class="item item-body">
+          <h3>My POIs: {{pois}}</h3>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>
