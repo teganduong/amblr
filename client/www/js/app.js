@@ -14,6 +14,7 @@ angular.module('amblr', [
   'amblr.signin',
   'amblr.signup',
   'amblr.centerMap',
+  'angular.filter',
   'amblr.routeFilter',
   'amblr.profile',
   'ngCookies'
