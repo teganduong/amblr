@@ -10,6 +10,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
   $window, Location, Routes, $timeout, $location, $controller, $rootScope, ENV) {
 
+
   var addPOIControllerScope = $scope.$new();
   $controller('addPOIController',{ $scope : addPOIControllerScope });
 
@@ -102,11 +103,20 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $scope.overlay = new $window.google.maps.OverlayView();
   $scope.overlay.draw = function() {}; // empty function required
   
-
+  var theMap = {};
   //use a promise to tell when the map is ready to be interacted with
   uiGmapIsReady.promise()
   .then(function (instances) {
     $scope.overlay.setMap(instances[0].map);
+    
+    //for testing directions
+    theMap = instances[0].map;
+    $scope.mapRef = $scope.map.control.getGMap();
+
+    uiGmapGoogleMapApi.then(function (maps) {
+                    $scope.directionsDisplay = new maps.DirectionsRenderer();
+                });
+    //end for directions
 
     // retrieve all the POIs from server and place them on map
     $scope.addNewPOIs();
@@ -115,6 +125,36 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   .then(function(){
     //after the map and POIs have loaded, lets set the current position
     $scope.setMapCenterCurrent();
+  })
+  .then(function() {
+    //testing directionsService
+
+    var directionsService = new google.maps.DirectionsService();
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+
+    var directionsRequest = {
+      origin: '747 Howard Street, San Francisco, CA',
+      destination: '982 Market Street, San Francisco, CA',
+      travelMode: google.maps.DirectionsTravelMode.WALKING,
+      unitSystem: google.maps.UnitSystem.METRIC
+    };
+
+    directionsService.route(
+      directionsRequest,
+      function(response, status)
+      {
+        if (status == google.maps.DirectionsStatus.OK)
+        {
+          // directionsDisplay.setDirections(response);
+         $scope.directionsDisplay.setMap(theMap);
+         $scope.directionsDisplay.setOptions({ suppressMarkers: true });
+         $scope.directionsDisplay.setDirections(response);
+          
+        }
+        else
+          console.log('there was an error', response);
+      }
+    );
   })
   .catch(function(err) {
     console.log('error in doing things when map is ready', err);
