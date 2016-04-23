@@ -25,7 +25,7 @@
         <input type="text" placeholder="Describe what this POI is" ng-model="currentPOI.description">
       </label>
       <div ng-click="showRoutes()"><label class="item item-input item-stacked-label"><span class="input-label add-to-route-header">Add to Route</span></label></div>
-      <label class="item item-input item-stacked-label item-remove-animate" ng-show="addToRoute">
+      <label class="item item-input item-stacked-label item-remove-animate" ng-show="showRouteList">
         <ion-list>
           <div class="existing-routes" ng-repeat="(routeID, routeName ) in allRoutes">
             <ion-radio ng-model="currentPOI.route" ng-value="routeName" ng-click="handleNewRoute(false)" name="routes">{{ routeName }}</ion-radio>

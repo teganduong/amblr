@@ -39,14 +39,6 @@ var createPOIsFromData = function() {
 
 }; 
 
-/*
-   Comment this out for prod.  It will attempt to
-   generate new POIs every time server is bounced.
-   It will delete all data in the db, if this is
-   not wanted, comment out this call. 
-*/
-// createPOIsFromData();
-
 exports.savePOI = function(req, res) {
   logger.info('POI to create: ' + req.body);
 
@@ -64,6 +56,7 @@ exports.savePOI = function(req, res) {
   }
 
   //check if the new POI has a route
+  console.log('this is the request body: ', req.body);
   if (req.body['route']) {
     var newRoute = {
       name: req.body['route'],
@@ -111,7 +104,7 @@ exports.savePOI = function(req, res) {
       });
   } else {
     //if no route provided then just add newPOI with no route
-    console.log('there was no route submitted');
+    logger.info('there was no route submitted');
     POI.create(newPOI, function(err, result) {
       if (err) {
         logger.error('in newPOI save ', err);
