@@ -31,15 +31,14 @@ exports.getRoutesNearUser = function(req, res) {
           type: "Point", 
           coordinates: [req.body[0], req.body[1]] 
         }, 
-        $maxDistance: 3000
+        $maxDistance: 10000
       } 
     } 
   }, function(err, routes){
     console.log(routes);
-    console.log(req.body);
     res.send(routes);
   })
-}
+};
 
 exports.getRoute = function(req, res) {
 
@@ -53,4 +52,3 @@ exports.getRoute = function(req, res) {
   //   res.json(pois); 
   // });
 };
->>>>>>> Find routes based on distance from passed in coords
