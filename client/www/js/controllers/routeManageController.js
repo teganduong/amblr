@@ -93,6 +93,7 @@ angular.module('amblr.routeManage', [])
     $scope.saveSelected = function () {
       $scope.disableSave = true;
       Routes.updateRoute($scope.currentRoute).then(function (route) {
+        $rootScope.$broadcast('reloadPOIs');
         $scope.hideRouteManageModal();
         $scope.disableSave = false;
       });
