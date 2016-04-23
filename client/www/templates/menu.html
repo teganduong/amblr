@@ -46,6 +46,9 @@ enable-menu-with-back-views attribute -->
         <li>
           <a class='item' ng-show='loggedIn' menu-close href='/api/users/signout'>Sign Out</a>
         </li>
+        <li>
+          <a class='item' menu-close ng-click='showRoutesNearMe()' ng-controller="routeFilter"> Filter Routes Near Me </a>
+        </li>
       </ul>
     </ion-content>
   </ion-side-menu> 
