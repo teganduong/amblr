@@ -188,7 +188,7 @@ angular.module ('amblr.services', [])
   }; 
 
   Routes.clearDirections = function() {
-    $rootScope.directionsDisplay.setMap(null);
+    $rootScope.directionsDisplay && $rootScope.directionsDisplay.setMap(null);
   } 
   return Routes;
 })
