@@ -25,8 +25,10 @@
         </ion-item>
       </ion-list>
       <div ng-drop="true" ng-drop-success="onDropComplete($data, $event, null)">
-        <button class="button col block button-dark" ng-click="resetSelected()">Back</button>
+        <button class="button col block button-dark" ng-click="saveSelected()" ng-disabled="disableSave">Save</button>
       </div>
+      <br/>
+      <button class="button col block button-dark" ng-click="resetSelected()">Back</button>
     </div>
   </ion-content>
 </ion-modal-view>

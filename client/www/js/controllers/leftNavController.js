@@ -19,7 +19,6 @@ angular.module('amblr.leftnav', ['ngDraggable'])
   };
   
   $scope.$on('draggable:end', function (target, event) {
-    console.log(target, event);
     /* only trigger for dropMarker draggable:end event */
     if (event.data && event.data.type === 'dropMarker') {
       // hardcoded offset to 27 px

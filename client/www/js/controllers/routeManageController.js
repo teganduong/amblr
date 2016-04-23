@@ -1,5 +1,6 @@
 angular.module('amblr.routeManage', [])
   .controller('routeManage', function ($scope, $rootScope, $ionicModal, $ionicSideMenuDelegate, $filter, Routes, POIs) {
+    $scope.disableSave = false;
     $scope.userID = null;
     $scope.availRoutes = [];
     $scope.currentRoute = null;
@@ -88,5 +89,13 @@ angular.module('amblr.routeManage', [])
       // refresh route
       $scope.selectRoute($scope.currentRoute._id);
     };
+
+    $scope.saveSelected = function () {
+      $scope.disableSave = true;
+      Routes.updateRoute($scope.currentRoute).then(function (route) {
+        $scope.hideRouteManageModal();
+        $scope.disableSave = false;
+      });
+    }
 
   });
