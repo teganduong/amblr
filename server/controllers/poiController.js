@@ -54,15 +54,14 @@ exports.savePOI = function(req, res) {
       newPOI[key] = req.body[key];
     }
   }
-
+  
   //check if the new POI has a route
-  console.log('this is the request body: ', req.body);
   if (req.body['route']) {
     var newRoute = {name: req.body['route'],
                     userID: req.body.userID};
 
     // if there is a route, once we extract and save it from body, check db
-    Route.findOneAsync({name: req.body['route'], userID: req.body.userID})
+    Route.findOneAsync({ name: req.body['route'], userID: req.body.userID })
       .then(function(route){
         //check if route exists
         if(!route) {
@@ -108,7 +107,6 @@ exports.savePOI = function(req, res) {
         res.status(400);
         return res.json(err);
       }
-      console.log('added this POI to db:', newPOI);
       // logger.info('POI successfully created: ' + result);
 
       res.status(201);
@@ -131,17 +129,17 @@ exports.getAllPOI = function(req, res) {
   });
 };
 
-exports.deletePOI = function(req, res) {
+exports.deletePOI = function (req, res) {
   var poiID = req.params.id;
-  POI.remove({_id: poiID}, function(err) {
-    if (err) {
-      logger.error('ERROR in delete: ', err);
-      res.status(404);
-      res.end();
-      return;
-    }
-    
+  POI.removeAsync({ _id: poiID }).then(function (poi) {
+    return Route.update({}, { $pull: { 'POIs': mongoose.Types.ObjectId(poiID) } }, { multi: true });
+  }).then(function (routes) {
     res.status(200);
+    res.end();
+    return;
+  }).catch(function (err) {
+    logger.error('ERROR in delete: ', err);
+    res.status(404);
     res.end();
   });
 };

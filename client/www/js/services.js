@@ -27,7 +27,6 @@ angular.module ('amblr.services', [])
   };
 
   POIs.savePOI = function(POI) {
-    console.log('saving this POI', POI);
     return $http({
       method: 'POST',
       url: ENV.apiEndpoint + '/api/pois/',
@@ -59,13 +58,13 @@ angular.module ('amblr.services', [])
 
   POIs.getRoutePOIs = function (route) {
     /* filter and order by the route POIs order */
-    return this.inMemoryPOIs.reduce(function (accumulator, element) {
+    return (route) ? this.inMemoryPOIs.reduce(function (accumulator, element) {
       var index = route.POIs.indexOf(element._id);
       if (index >= 0) {
         accumulator[index] = element;
       }
       return accumulator;
-    }, []);
+    }, []) : this.inMemoryPOIs;
   }
 
   return POIs;
@@ -188,7 +187,7 @@ angular.module ('amblr.services', [])
   }; 
 
   Routes.clearDirections = function() {
-    $rootScope.directionsDisplay.setMap(null);
+    $rootScope.directionsDisplay && $rootScope.directionsDisplay.setMap(null);
   } 
   return Routes;
 })
