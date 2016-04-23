@@ -16,7 +16,6 @@ exports.getAllRoutes = function(req, res) {
 
 exports.getOneRoute = function(req, res) {
   const routeId = req.params._id;
-  console.log('checking this req.params', req.params);
   Route.findOne({_id: routeId}, function(err, route) {
     if (err) {
       logger.error('ERROR in retrieving route: ', err);
@@ -24,7 +23,6 @@ exports.getOneRoute = function(req, res) {
       res.end();
       return;
     }
-    console.log('server found this route on the server:', route)
     res.json(route);
   });
 };

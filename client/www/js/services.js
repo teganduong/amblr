@@ -70,7 +70,6 @@ angular.module ('amblr.services', [])
   Routes.getOneRoute = function(routeId) {
     return $http.get(ENV.apiEndpoint + '/api/routes/' + routeId)
       .then(function(route) {
-        console.log('here is the route data: ', route.data);
         return route.data;
       })
       .catch(function(err) {
@@ -79,7 +78,15 @@ angular.module ('amblr.services', [])
   };
 
   Routes.getDirections = function(routeId) {
-    this.getOneRoute(routeId);
+    this.getOneRoute(routeId)
+    .then(function(route) {
+      const waypoints = route.POIs;
+      const start = waypoints.splice(0,1);
+      const end = waypoints.splice(POIs.length-1, 1);
+    })
+    .catch(function(err) {
+          console.log('error in setting up route', err);
+    });
     uiGmapIsReady.promise()
     .then(function (instances) {        
       //for testing directions
