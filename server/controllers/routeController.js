@@ -14,15 +14,11 @@ exports.getAllRoutes = function(req, res) {
   });
 };
 
-exports.getOneRoute = function(req, res) {
-  const routeId = req.params._id;
-  Route.findOne({_id: routeId}, function(err, route) {
-    if (err) {
-      logger.error('ERROR in retrieving route: ', err);
-      res.status(404);
-      res.end();
-      return;
-    }
-    res.json(route);
+exports.updateRoute = function (req, res) {
+  var route = req.body;
+  
+  Route.findOneAndUpdate({ '_id': route['_id'] }, route, { },
+    function (err, route) {
+      res.json(route);
   });
 };

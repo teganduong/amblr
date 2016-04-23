@@ -2,6 +2,7 @@ angular.module ('amblr.services', [])
 
 .factory('POIs', function($http, $rootScope, ENV, $filter) {
   var POIs = {};
+  POIs.inMemoryPOIs = [];
 
   POIs.routeFilter = null;
 
@@ -10,10 +11,14 @@ angular.module ('amblr.services', [])
     
     return $http.get(ENV.apiEndpoint + '/api/pois/')
     .then(function (pois) {
-      /* filter POIs here */
+      self.inMemoryPOIs = pois.data;
+      
+      /* filter POIs here for display */
       if (self.routeFilter) {
-        pois.data = $filter('filter')(pois.data, { 'routeId': self.routeFilter });
+        /* filter and order by the route POIs order */
+        pois.data = self.getRoutePOIs(self.routeFilter);
       }
+      
       return pois;
     })
     .catch(function(err) {
@@ -51,42 +56,43 @@ angular.module ('amblr.services', [])
     this.routeFilter = routeID;
   };
 
+  POIs.getRoutePOIs = function (route) {
+    /* filter and order by the route POIs order */
+    return this.inMemoryPOIs.reduce(function (accumulator, element) {
+      var index = route.POIs.indexOf(element._id);
+      if (index >= 0) {
+        accumulator[index] = element;
+      }
+      return accumulator;
+    }, []);
+  }
+
   return POIs;
 })
 
 .factory('Routes', function($http, $rootScope, ENV, uiGmapGoogleMapApi, uiGmapIsReady) {
   var Routes = {};
 
-  Routes.getRoutes = function() {
-      return $http.get(ENV.apiEndpoint + '/api/routes/')
-      .then(function(routes) {
-        return Routes = routes.data;
+  Routes.getRoutes = function () {
+    return $http.get(ENV.apiEndpoint + '/api/routes/')
+      .then(function (routes) {
+        return routes.data;
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log('error in getting routes in services.js: ', err);
       });
     };
-  
-  Routes.getOneRoute = function(routeId) {
-    return $http.get(ENV.apiEndpoint + '/api/routes/' + routeId)
-      .then(function(route) {
-        return route.data;
-      })
-      .catch(function(err) {
-        console.log('error in getting routes in services.js: ', err);
-      });
-  };
 
   Routes.getDirections = function(routeId) {
-    this.getOneRoute(routeId)
-    .then(function(route) {
-      const waypoints = route.POIs;
-      const start = waypoints.splice(0,1);
-      const end = waypoints.splice(POIs.length-1, 1);
-    })
-    .catch(function(err) {
-          console.log('error in setting up route', err);
-    });
+    // this.getOneRoute(routeId)
+    // .then(function(route) {
+    //   const waypoints = route.POIs;
+    //   const start = waypoints.splice(0,1);
+    //   const end = waypoints.splice(POIs.length-1, 1);
+    // })
+    // .catch(function(err) {
+    //       console.log('error in setting up route', err);
+    // });
     uiGmapIsReady.promise()
     .then(function (instances) {        
       //for testing directions
@@ -130,6 +136,16 @@ angular.module ('amblr.services', [])
       console.log('error in doing things when map is ready', err);
     });
   };
+
+  Routes.updateRoute = function (route) {
+    return $http.put(ENV.apiEndpoint + '/api/routes/', route)
+      .then(function (routes) {
+        return routes.data;
+      })
+      .catch(function (err) {
+        console.log('error in updating routes in services.js: ', err);
+      });
+  };  
 
   return Routes;
 })

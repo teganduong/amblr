@@ -26,7 +26,16 @@ angular.module('amblr.routeFilter', [])
 
     $scope.setRoute = function (routeID) {
       $scope.filteredRoute = routeID;
-      POIs.setRouteFilter(routeID);
+      if (routeID) {
+        for (var i = 0; i < $scope.availRoutes.length; i++) {
+          if ($scope.availRoutes[i]['_id'] === routeID) {
+            POIs.setRouteFilter($scope.availRoutes[i]);
+            break;
+          }
+        }
+      } else {
+        POIs.setRouteFilter(null);
+      }
       $rootScope.$broadcast('reloadPOIs');
       $scope.modal.hide();
       Routes.getDirections(routeID);
