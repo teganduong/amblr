@@ -72,6 +72,17 @@ angular.module ('amblr.services', [])
 
 .factory('Routes', function($http, $rootScope, ENV) {
   var Routes = {};
+  
+  Routes.filterRoutesByDistance = function (coords) {
+    return $http({
+      method: 'POST',
+      url: ENV.apiEndpoint + '/api/routes/',
+      data: coords
+    })
+    .then(function(res) {
+      console.log(res);
+    });
+  }
 
   Routes.getRoutes = function () {
     return $http.get(ENV.apiEndpoint + '/api/routes/')
@@ -91,8 +102,7 @@ angular.module ('amblr.services', [])
       .catch(function (err) {
         console.log('error in updating routes in services.js: ', err);
       });
-  };  
-
+  }; 
   return Routes;
 })
 
