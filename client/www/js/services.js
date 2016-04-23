@@ -80,7 +80,7 @@ angular.module ('amblr.services', [])
       data: coords
     })
     .then(function(res) {
-      console.log(res);
+      return res;
     });
   }
 
