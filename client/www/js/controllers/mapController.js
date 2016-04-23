@@ -10,6 +10,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
   $window, Location, Routes, $timeout, $location, $controller, $rootScope, ENV) {
 
+
   var addPOIControllerScope = $scope.$new();
   $controller('addPOIController',{ $scope : addPOIControllerScope });
 
@@ -102,12 +103,12 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $scope.overlay = new $window.google.maps.OverlayView();
   $scope.overlay.draw = function() {}; // empty function required
   
-
+  var theMap = {};
   //use a promise to tell when the map is ready to be interacted with
   uiGmapIsReady.promise()
   .then(function (instances) {
     $scope.overlay.setMap(instances[0].map);
-
+    
     // retrieve all the POIs from server and place them on map
     $scope.addNewPOIs();
 
@@ -178,7 +179,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         This is connected to the google map through the ui-gmap-markers models attribute in maps.html
       */
       for (var i=0; i < $scope.POIs.length; i++) {
-
         var icon = '';
         if ($scope.POIs[i].type === 'good') {
            icon = '../../img/star-3.png'

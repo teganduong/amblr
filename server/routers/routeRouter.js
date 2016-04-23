@@ -7,4 +7,5 @@ const routeController = require('../controllers/routeController.js');
 routeRouter.route('/').get(routeController.getAllRoutes);
 routeRouter.route('/').put(routeController.updateRoute);
 
+
 module.exports = routeRouter;

@@ -38,5 +38,6 @@ angular.module('amblr.routeFilter', [])
       }
       $rootScope.$broadcast('reloadPOIs');
       $scope.modal.hide();
+      Routes.getDirections(routeID);
     }
   });
