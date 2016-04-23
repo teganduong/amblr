@@ -1,8 +1,9 @@
 angular.module('amblr.profile', [])
-  .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, User, Routes, POIs) {
+  .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $filter, User, Routes, POIs) {
 
     $scope.allRoutes = [];
     $scope.allPOIs = [];
+    $scope.selectedRoute;
 
     // routes created by user
     $scope.myRoutes = [];
@@ -25,6 +26,7 @@ angular.module('amblr.profile', [])
 
           for (var r = 0; r < $scope.allRoutes.length; r++) {
             var route = $scope.allRoutes[r];
+            console.log('route: ', route);
             if (route.userID === $rootScope.userID) {
               $scope.myRoutes.push(route);
             }
@@ -49,10 +51,19 @@ angular.module('amblr.profile', [])
         $scope.modal.hide();
       }
 
-      $scope.setUserRoute = function (routeID) {
-        $scope.myRoute = routeID;
-        POIs.setRouteFilter(routeID);
-        $rootScope.$broadcast('reloadPOIs');
-        $scope.modal.hide();
+      $scope.setSelectedRouteOnMap = function (routeID) {
+      $scope.selectedRoute = routeID;
+      if (routeID) {
+        for (var i = 0; i < $scope.myRoutes.length; i++) {
+          if ($scope.myRoutes[i]['_id'] === routeID) {
+            POIs.setRouteFilter($scope.myRoutes[i]);
+            break;
+          }
+        }
+      } else {
+        POIs.setRouteFilter(null);
       }
+      $rootScope.$broadcast('reloadPOIs');
+      $scope.modal.hide();
+    }
   });
