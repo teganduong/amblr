@@ -38,3 +38,19 @@ exports.getRoutesNearUser = function(req, res) {
   })
 };
 
+exports.deleteRoute = function (req, res) {
+  
+  if (!req.params.id) {
+    console.log('Error: routeID not found when deleting route');
+    return;
+  }
+
+  Route.findOneAndRemoveAsync({
+    '_id': mongoose.Types.ObjectId(req.params.id)
+  }).then(function (result) {
+    res.status(200);
+    res.end();
+  }).catch(function (error) {
+    console.log('Error: failed to find one and remove', error);
+  });
+};
