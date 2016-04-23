@@ -66,16 +66,15 @@ exports.savePOI = function(req, res) {
   //check if the new POI has a route
   if (req.body['route']) {
     var newRoute = {name: req.body['route'],
-                    userID: req.body.userID,
-                    POIs: []};
+                    userID: req.body.userID};
 
     // if there is a route, once we extract and save it from body, check db
-    Route.findOneAsync(newRoute)
+    Route.findOneAsync({name: req.body['route'], userID: req.body.userID})
       .then(function(route){
         //check if route exists
         if(!route) {
         // if it doesn't exist, then add it to database so we can get its ID
-
+          newRoute.loc = {type: "Point", coordinates: [req.body.long, req.body.lat]}
           return Route.createAsync(newRoute);
         }
         // if it did exist then just return it 
@@ -90,11 +89,12 @@ exports.savePOI = function(req, res) {
       }) 
       .then(function(result) {
         // logger.info('POI successfully created: ' + result)
-        Route.findOneAndUpdateAsync({name: newRoute.name}, { $push: { "POIs": result._id} }, function(err, data) {
+        var POIID = String(result._id);
+        Route.findOneAndUpdateAsync({name: newRoute.name}, { $push: { POIs: POIID} }, function(err, data) {
           if ( err ) {
             console.log('ERROR ' + err );
           }
-        });
+        })
         return result;
       })
       .then(function(result){
