@@ -45,7 +45,7 @@ angular.module ('amblr.services', [])
     var url = ENV.apiEndpoint + '/api/pois/' + poiID;
     return $http.delete(url, {})
               .success(function(data, status, headers, config) {
-                console.log('POI successfully deleted!');
+                // console.log('POI successfully deleted!');
               })
               .error(function(data, status, headers, config) {
                 console.error('Error in deleting POI');
@@ -58,29 +58,133 @@ angular.module ('amblr.services', [])
 
   POIs.getRoutePOIs = function (route) {
     /* filter and order by the route POIs order */
-    return this.inMemoryPOIs.reduce(function (accumulator, element) {
+    return (route) ? this.inMemoryPOIs.reduce(function (accumulator, element) {
       var index = route.POIs.indexOf(element._id);
       if (index >= 0) {
         accumulator[index] = element;
       }
       return accumulator;
-    }, []);
+    }, []) : this.inMemoryPOIs;
   }
 
   return POIs;
 })
 
-.factory('Routes', function($http, $rootScope, ENV) {
+.factory('Routes', function($http, $rootScope, ENV, uiGmapGoogleMapApi, uiGmapIsReady, POIs) {
   var Routes = {};
+  var inMemoryRoutes = {};
+  var directionsService = {};
+  
+  Routes.filterRoutesByDistance = function (coords) {
+    return $http({
+      method: 'POST',
+      url: ENV.apiEndpoint + '/api/routes/',
+      data: coords
+    })
+    .then(function(res) {
+      return res;
+    });
+  };
 
   Routes.getRoutes = function () {
+    var self = this;
     return $http.get(ENV.apiEndpoint + '/api/routes/')
       .then(function (routes) {
-        return routes.data;
+        return self.inMemoryRoutes = routes.data;
       })
       .catch(function (err) {
         console.log('error in getting routes in services.js: ', err);
       });
+    };
+
+  Routes.getRouteById = function(routeId) {
+    // access inMemoryRoutes
+    // 
+    var routeById;
+    this.inMemoryRoutes.forEach(function(route, index) {
+      if(route._id === routeId) {
+        routeById = route;
+      }
+    });
+    return routeById;
+  }
+
+  Routes.getDirections = function(routeId) {
+    // need to get the route object to use getRoutePOIs
+    var routeObject = this.getRouteById(routeId);
+    
+    //get the POIs associated with this route
+    var waypoints = POIs.getRoutePOIs(routeObject);
+
+    // only want to show directions if there is more than one waypoint
+    if (waypoints.length > 1 ) {
+      var start = waypoints.splice(0,1);
+      var end = waypoints.splice(waypoints.length -1 , 1);
+      var waypointCoords = [];
+      //splice above puts them into an array
+      // taking them out so they are in a format we expect
+      start = { lat:start[0]['lat'], lng: start[0]['long'] };
+      end = { lat:end[0]['lat'], lng: end[0]['long'] };
+
+      waypoints.forEach(function(waypoint, index) {
+        var coords = { lat:waypoint['lat'], lng: waypoint['long'] };
+        
+        // format needed for waypoints in directions API:
+        // https://developers.google.com/maps/documentation/javascript/directions#DirectionsRequests
+        waypointCoords.push({location:coords, stopover: true});
+
+      });
+
+      //now we can create the directions
+      uiGmapIsReady.promise()
+      .then(function (instances) {        
+        //for testing directions
+        mapInstance = instances[0].map;
+
+        uiGmapGoogleMapApi.then(function (maps) {
+           $rootScope.directionsDisplay = new maps.DirectionsRenderer();
+        });
+
+      })
+      .then(function() {
+        directionsService = new google.maps.DirectionsService();
+        var directionsRequest = {
+          origin: start,
+          destination: end,
+          waypoints: waypointCoords,
+          travelMode: google.maps.DirectionsTravelMode.WALKING,
+          unitSystem: google.maps.UnitSystem.METRIC
+        };
+
+        directionsService.route(
+          directionsRequest,
+          function(response, status)
+          {
+            if (status == google.maps.DirectionsStatus.OK)
+            {
+             $rootScope.directionsDisplay.setMap(mapInstance);
+             $rootScope.directionsDisplay.setOptions({ suppressMarkers: true});
+             $rootScope.directionsDisplay.setDirections(response);
+              
+            }
+            else
+              console.log('there was an error', response);
+          }
+        );
+      })
+      .catch(function(err) {
+        console.log('error in doing things when map is ready', err);
+      });
+    } else {
+      // to do if there is only one or no POIs in a route
+      var newCenter = {
+        lat: routeObject.loc.coordinates[1],
+        lng: routeObject.loc.coordinates[0]
+      };
+
+      $rootScope.$broadcast('recenterMap', {newCenter: newCenter});
+
+    }
   };
 
   Routes.updateRoute = function (route) {
@@ -91,8 +195,22 @@ angular.module ('amblr.services', [])
       .catch(function (err) {
         console.log('error in updating routes in services.js: ', err);
       });
-  };  
+  }; 
 
+  Routes.clearDirections = function () {
+    $rootScope.directionsDisplay && $rootScope.directionsDisplay.setMap(null);
+  };
+
+  Routes.deleteRoute = function (routeID) {
+    var url = ENV.apiEndpoint + '/api/routes/' + routeID;
+    return $http.delete(url, {})
+      .success(function (data, status, headers, config) {
+      })
+      .error(function (data, status, headers, config) {
+        console.error('Error in deleting route');
+      });
+  };
+  
   return Routes;
 })
 

@@ -10,6 +10,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
   $window, Location, Routes, $timeout, $location, $controller, $rootScope, ENV) {
 
+
   var addPOIControllerScope = $scope.$new();
   $controller('addPOIController',{ $scope : addPOIControllerScope });
 
@@ -97,17 +98,16 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     }
   };
   
-
   /* hacks to get overlay to work */
   $scope.overlay = new $window.google.maps.OverlayView();
   $scope.overlay.draw = function() {}; // empty function required
   
-
+  var theMap = {};
   //use a promise to tell when the map is ready to be interacted with
   uiGmapIsReady.promise()
   .then(function (instances) {
     $scope.overlay.setMap(instances[0].map);
-
+    
     // retrieve all the POIs from server and place them on map
     $scope.addNewPOIs();
 
@@ -178,7 +178,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         This is connected to the google map through the ui-gmap-markers models attribute in maps.html
       */
       for (var i=0; i < $scope.POIs.length; i++) {
-
         var icon = '';
         if ($scope.POIs[i].type === 'good') {
            icon = '../../img/star-3.png'
@@ -242,6 +241,9 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           latitude: pos.lat,
           longitude: pos.long
         };
+        $scope.map.zoom = 15;
+        $rootScope.coordinates = [$scope.map.center.longitude, $scope.map.center.latitude];
+
       })
       .catch(function(err) {
         console.log('error in getting current pos', err);
@@ -255,6 +257,13 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   // Listen for broadcast events fired from within services.js
   $scope.$on('centerMap', function () {
     $scope.setMapCenterCurrent();
+  });
+  $scope.$on('recenterMap', function(event, args) {
+    $scope.map.center = {
+          latitude: args.newCenter.lat,
+          longitude: args.newCenter.lng
+        };
+    $rootScope.coordinates = [$scope.map.center.longitude, $scope.map.center.latitude];
   });
   $scope.$on('reloadPOIs', function () {
     $scope.addNewPOIs();
@@ -275,7 +284,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $scope.placeMarker = function(latLng)  {
 
     $scope.removeMarker();
-
+    Routes.clearDirections();
+    
     $scope.$apply( function() {
       $scope.dropMarker = {
         id: 1,
@@ -342,11 +352,11 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     if (!$scope.dropMarker) {
       $scope.removeMarker();
     }
-
     addPOIControllerScope.currentPOI.lat = $scope.dropMarker.coords.latitude;
     addPOIControllerScope.currentPOI.long = $scope.dropMarker.coords.longitude;
-    addPOIControllerScope.currentPOI.route = {};
+    addPOIControllerScope.currentPOI.route = null;
     addPOIControllerScope.currentPOI.userID = $rootScope.userID;
+    addPOIControllerScope.showRouteList = false;//this is so that when modal shows, the route list is hidden
     addPOIControllerScope.modal.show();
     $scope.map.droppedInfoWindow.show = false;
     $scope.removeMarker();
@@ -359,16 +369,25 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   });
 
   $scope.deletePOI = function (poiID) {
-    POIs.deletePOI(poiID);
-    $scope.map.infoWindow.show = false;
-    $scope.removeMarker();
+    POIs.deletePOI(poiID)
+    .then(function() {
+      $scope.map.infoWindow.show = false;
+      $scope.removeMarker();
 
-    for (var i = 0; i < $scope.map.POIMarkers.length; i++) {
-      if ($scope.map.POIMarkers[i].id === poiID) {
-        $scope.map.POIMarkers.splice(i, 1);
-        break;
+      for (var i = 0; i < $scope.map.POIMarkers.length; i++) {
+        if ($scope.map.POIMarkers[i].id === poiID) {
+          $scope.map.POIMarkers.splice(i, 1);
+          break;
+        }
       }
-    }
+      Routes.clearDirections();
+      return Routes.getRoutes()
+    })
+    .then(function() {
+        Routes.getDirections(POIs.routeFilter._id);
+    });
+    
+    
   };
 
 });
