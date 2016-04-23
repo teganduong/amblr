@@ -112,7 +112,7 @@ angular.module ('amblr.services', [])
   Routes.getDirections = function(routeId) {
     // need to get the route object to use getRoutePOIs
     var routeObject = this.getRouteById(routeId);
-    console.log('route object to get directions for');
+    
     //get the POIs associated with this route
     var waypoints = POIs.getRoutePOIs(routeObject);
 
@@ -205,7 +205,6 @@ angular.module ('amblr.services', [])
     var url = ENV.apiEndpoint + '/api/routes/' + routeID;
     return $http.delete(url, {})
       .success(function (data, status, headers, config) {
-        //console.log('Route successfully deleted!');
       })
       .error(function (data, status, headers, config) {
         console.error('Error in deleting route');
