@@ -275,7 +275,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $scope.placeMarker = function(latLng)  {
 
     $scope.removeMarker();
-
+    Routes.clearDirections();
+    
     $scope.$apply( function() {
       $scope.dropMarker = {
         id: 1,
@@ -342,7 +343,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     if (!$scope.dropMarker) {
       $scope.removeMarker();
     }
-
     addPOIControllerScope.currentPOI.lat = $scope.dropMarker.coords.latitude;
     addPOIControllerScope.currentPOI.long = $scope.dropMarker.coords.longitude;
     addPOIControllerScope.currentPOI.route = null;
