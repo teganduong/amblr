@@ -98,7 +98,6 @@ angular.module ('amblr.services', [])
       });
     };
 
-<<<<<<< da195f63d505a383554bc9bc1eff73846bf9fa77
   Routes.getRouteById = function(routeId) {
     // access inMemoryRoutes
     // 
@@ -187,19 +186,10 @@ angular.module ('amblr.services', [])
         console.log('error in updating routes in services.js: ', err);
       });
   }; 
-<<<<<<< HEAD
-<<<<<<< 1d7a1deb7ba6bcdd1bd9224822f8f403233ce073
 
   Routes.clearDirections = function() {
     $rootScope.directionsDisplay.setMap(null);
   } 
-
-=======
->>>>>>> Make post requests with coords to database
-=======
->>>>>>> Make post requests with coords to database
-=======
->>>>>>> 6bcc352bfd9d361faa76a4f8d00d7ffe57483dca
   return Routes;
 })
 
