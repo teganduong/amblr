@@ -27,6 +27,7 @@ angular.module ('amblr.services', [])
   };
 
   POIs.savePOI = function(POI) {
+    console.log('saving this POI', POI);
     return $http({
       method: 'POST',
       url: ENV.apiEndpoint + '/api/pois/',
@@ -73,6 +74,7 @@ angular.module ('amblr.services', [])
 .factory('Routes', function($http, $rootScope, ENV, uiGmapGoogleMapApi, uiGmapIsReady, POIs) {
   var Routes = {};
   var inMemoryRoutes = {};
+  var directionsService = {};
 
   Routes.getRoutes = function () {
     var self = this;
@@ -134,10 +136,7 @@ angular.module ('amblr.services', [])
 
     })
     .then(function() {
-      //testing directionsService
-
-      var directionsService = new google.maps.DirectionsService();
-
+      directionsService = new google.maps.DirectionsService();
       var directionsRequest = {
         origin: start,
         destination: end,
@@ -175,7 +174,11 @@ angular.module ('amblr.services', [])
       .catch(function (err) {
         console.log('error in updating routes in services.js: ', err);
       });
-  };  
+  }; 
+
+  Routes.clearDirections = function() {
+    $rootScope.directionsDisplay.setMap(null);
+  } 
 
   return Routes;
 })

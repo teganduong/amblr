@@ -275,7 +275,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $scope.placeMarker = function(latLng)  {
 
     $scope.removeMarker();
-
+    Routes.clearDirections();
+    
     $scope.$apply( function() {
       $scope.dropMarker = {
         id: 1,
@@ -342,11 +343,11 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     if (!$scope.dropMarker) {
       $scope.removeMarker();
     }
-
     addPOIControllerScope.currentPOI.lat = $scope.dropMarker.coords.latitude;
     addPOIControllerScope.currentPOI.long = $scope.dropMarker.coords.longitude;
-    addPOIControllerScope.currentPOI.route = {};
+    addPOIControllerScope.currentPOI.route = null;
     addPOIControllerScope.currentPOI.userID = $rootScope.userID;
+    addPOIControllerScope.showRouteList = false;//this is so that when modal shows, the route list is hidden
     addPOIControllerScope.modal.show();
     $scope.map.droppedInfoWindow.show = false;
     $scope.removeMarker();

@@ -5,7 +5,7 @@ angular.module('amblr.addPOI', [])
   $scope.addNewRoute = false;
 
   //for showing list of routes
-  $scope.addToRoute = false;
+  $scope.showRouteList = false;
   
   $scope.handleNewRoute = function(state) {
     //state sets whether or not to show the new route text box
@@ -13,10 +13,14 @@ angular.module('amblr.addPOI', [])
   }
 
   $scope.showRoutes = function() {
-    $scope.addToRoute = !$scope.addToRoute;
-    if(!$scope.addToRoute) {
+    $scope.showRouteList = !$scope.showRouteList;
+    if(!$scope.showRouteList) {
       $scope.addNewRoute = false;
-      $scope.currentPOI.route = {};
+      $scope.currentPOI.route = null;
+    } 
+    if(Routes.inMemoryRoutes.length > 0){
+      // if there are some in memory routes, set the default route to the first in the list
+      $scope.currentPOI.route = Routes.inMemoryRoutes[0]['name'];
     }
   }
 
@@ -41,7 +45,6 @@ angular.module('amblr.addPOI', [])
       console.log('error: ' + data);
     });
   };
-
 
   //current POI is an object with properties: lat, long, type, description, title, route
   //set default of type to good
@@ -92,7 +95,7 @@ angular.module('amblr.addPOI', [])
   };
 
   $scope.cancelPOI = function() {
-    $scope.currentPOI = { type: 'good', route: {}};
+    $scope.currentPOI = { type: 'good', route: null};
     $scope.closeForm();
     $location.path('/menu/home');
   };
@@ -120,7 +123,7 @@ angular.module('amblr.addPOI', [])
       $scope.currentPOI.lat = pos.lat;
       $scope.currentPOI.long = pos.long;
       $scope.currentPOI.userID = $rootScope.userID;
-      $scope.currentPOI.route = {};
+      $scope.currentPOI.route = null;
       //once position is found, open up modal form
       $scope.modal.show();
     })
@@ -137,7 +140,7 @@ angular.module('amblr.addPOI', [])
 
   //close POI form
   $scope.closeForm = function() {
-    $scope.currentPOI.route = {};
+    $scope.currentPOI.route = null;
     $scope.addToRoute = false;
     $scope.modal.hide();
   };

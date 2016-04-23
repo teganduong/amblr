@@ -25,6 +25,10 @@ angular.module('amblr.routeFilter', [])
     }
 
     $scope.setRoute = function (routeID) {
+      // if there are directions set on the map
+      if ($rootScope.directionsDisplay) {
+        Routes.clearDirections(); // clear them before setting a new route
+      }
       $scope.filteredRoute = routeID;
       if (routeID) {
         for (var i = 0; i < $scope.availRoutes.length; i++) {
