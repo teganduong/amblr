@@ -179,7 +179,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         This is connected to the google map through the ui-gmap-markers models attribute in maps.html
       */
       for (var i=0; i < $scope.POIs.length; i++) {
-
         var icon = '';
         if ($scope.POIs[i].type === 'good') {
            icon = '../../img/star-3.png'

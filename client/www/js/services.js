@@ -70,29 +70,54 @@ angular.module ('amblr.services', [])
   return POIs;
 })
 
-.factory('Routes', function($http, $rootScope, ENV, uiGmapGoogleMapApi, uiGmapIsReady) {
+.factory('Routes', function($http, $rootScope, ENV, uiGmapGoogleMapApi, uiGmapIsReady, POIs) {
   var Routes = {};
+  var inMemoryRoutes = {};
 
   Routes.getRoutes = function () {
+    var self = this;
     return $http.get(ENV.apiEndpoint + '/api/routes/')
       .then(function (routes) {
-        return routes.data;
+        return self.inMemoryRoutes = routes.data;
       })
       .catch(function (err) {
         console.log('error in getting routes in services.js: ', err);
       });
     };
 
+  Routes.getRouteById = function(routeId) {
+    // access inMemoryRoutes
+    // 
+    var routeById;
+    this.inMemoryRoutes.forEach(function(route, index) {
+      if(route._id === routeId) {
+        routeById = route;
+      }
+    });
+    return routeById;
+  }
+
   Routes.getDirections = function(routeId) {
-    // this.getOneRoute(routeId)
-    // .then(function(route) {
-    //   const waypoints = route.POIs;
-    //   const start = waypoints.splice(0,1);
-    //   const end = waypoints.splice(POIs.length-1, 1);
-    // })
-    // .catch(function(err) {
-    //       console.log('error in setting up route', err);
-    // });
+    // need to get the route object to use getRoutePOIs
+    var routeObject = this.getRouteById(routeId);
+
+    //get the POIs associated with this route
+    var waypoints = POIs.getRoutePOIs(routeObject);
+
+    var start = waypoints.splice(0,1);
+    var end = waypoints.splice(waypoints.length -1 , 1);
+    var waypointCoords = [];
+    //splice above puts them into an array
+    // taking them out so they are in a format we expect
+    start = { lat:start[0]['lat'], lng: start[0]['long'] };
+    end = { lat:end[0]['lat'], lng: end[0]['long'] };
+
+    waypoints.forEach(function(waypoint, index) {
+      var coords = { lat:waypoint['lat'], lng: waypoint['long'] };
+      waypointCoords.push(coords);
+    });
+    console.log('all waypoint coords: ', waypointCoords);
+
     uiGmapIsReady.promise()
     .then(function (instances) {        
       //for testing directions
@@ -110,8 +135,9 @@ angular.module ('amblr.services', [])
       var directionsService = new google.maps.DirectionsService();
 
       var directionsRequest = {
-        origin: '747 Howard Street, San Francisco, CA',
-        destination: '982 Market Street, San Francisco, CA',
+        origin: start,
+        destination: end,
+        waypoints: waypointCoords,
         travelMode: google.maps.DirectionsTravelMode.WALKING,
         unitSystem: google.maps.UnitSystem.METRIC
       };
