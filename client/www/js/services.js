@@ -187,11 +187,14 @@ angular.module ('amblr.services', [])
         console.log('error in updating routes in services.js: ', err);
       });
   }; 
+<<<<<<< 1d7a1deb7ba6bcdd1bd9224822f8f403233ce073
 
   Routes.clearDirections = function() {
     $rootScope.directionsDisplay.setMap(null);
   } 
 
+=======
+>>>>>>> Make post requests with coords to database
 =======
 >>>>>>> Make post requests with coords to database
   return Routes;
