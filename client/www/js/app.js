@@ -16,6 +16,7 @@ angular.module('amblr', [
   'amblr.centerMap',
   'angular.filter',
   'amblr.routeFilter',
+  'amblr.routeManage',
   'amblr.profile',
   'ngCookies'
 ])
