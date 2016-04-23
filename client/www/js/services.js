@@ -90,6 +90,7 @@ angular.module ('amblr.services', [])
     var self = this;
     return $http.get(ENV.apiEndpoint + '/api/routes/')
       .then(function (routes) {
+        console.log('got routes again:', routes.data);
         return self.inMemoryRoutes = routes.data;
       })
       .catch(function (err) {
@@ -137,6 +138,7 @@ angular.module ('amblr.services', [])
     uiGmapIsReady.promise()
     .then(function (instances) {        
       //for testing directions
+      console.log('redraw the directions');
       mapInstance = instances[0].map;
 
       uiGmapGoogleMapApi.then(function (maps) {

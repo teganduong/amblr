@@ -371,6 +371,11 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         break;
       }
     }
+
+    Routes.clearDirections();
+    Routes.getRoutes();
+    Routes.getDirections(POIs.routeFilter);
+
   };
 
 });
