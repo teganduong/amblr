@@ -178,17 +178,13 @@ angular.module ('amblr.services', [])
       });
     } else {
       // to do if there is only one or no POIs in a route
-      uiGmapIsReady.promise()
-      .then(function (instances) {        
-        var newCenter = {
-          lat: routeObject.loc.coordinates[1],
-          lng: routeObject.loc.coordinates[0]
-        };
+      var newCenter = {
+        lat: routeObject.loc.coordinates[1],
+        lng: routeObject.loc.coordinates[0]
+      };
 
-        $rootScope.$broadcast('recenterMap', {newCenter: newCenter});
-        //end for directions
+      $rootScope.$broadcast('recenterMap', {newCenter: newCenter});
 
-      })
     }
   };
 
