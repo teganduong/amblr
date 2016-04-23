@@ -16,14 +16,7 @@ angular.module ('amblr.services', [])
       /* filter POIs here for display */
       if (self.routeFilter) {
         /* filter and order by the route POIs order */
-        pois.data = pois.data.reduce(function (accumulator, element, index) {
-          var index = self.routeFilter.POIs.indexOf(element._id);
-          if (index >= 0) {
-            accumulator[index] = element;
-          }
-          return accumulator;
-        }, []);
-        
+        pois.data = self.getRoutePOIs(self.routeFilter);
       }
       
       return pois;
@@ -62,6 +55,17 @@ angular.module ('amblr.services', [])
   POIs.setRouteFilter = function (routeID) {
     this.routeFilter = routeID;
   };
+
+  POIs.getRoutePOIs = function (route) {
+    /* filter and order by the route POIs order */
+    return this.inMemoryPOIs.reduce(function (accumulator, element) {
+      var index = route.POIs.indexOf(element._id);
+      if (index >= 0) {
+        accumulator[index] = element;
+      }
+      return accumulator;
+    }, []);
+  }
 
   return POIs;
 })

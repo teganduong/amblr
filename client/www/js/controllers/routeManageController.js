@@ -33,13 +33,7 @@ angular.module('amblr.routeManage', [])
       var selectedRoute = $filter('filter')($scope.availRoutes, { '_id': routeID })[0];
 
       /* filter and order by the route POIs order */      
-      $scope.routePOIs = POIs.inMemoryPOIs.reduce(function (accumulator, element, index) {
-        var index = selectedRoute.POIs.indexOf(element._id);
-        if (index >= 0) {
-          accumulator[index] = element;
-        }
-        return accumulator;
-      }, []);
+      $scope.routePOIs = POIs.getRoutePOIs(selectedRoute);
       
       $scope.currentRoute = selectedRoute;
     }
