@@ -27,6 +27,7 @@ angular.module ('amblr.services', [])
   };
 
   POIs.savePOI = function(POI) {
+    console.log('saving this POI', POI);
     return $http({
       method: 'POST',
       url: ENV.apiEndpoint + '/api/pois/',

@@ -20,7 +20,7 @@ angular.module('amblr.addPOI', [])
     } 
     if(Routes.inMemoryRoutes.length > 0){
       // if there are some in memory routes, set the default route to the first in the list
-      $scope.currentPOI.route = Routes.inMemoryRoutes[0];
+      $scope.currentPOI.route = Routes.inMemoryRoutes[0]['name'];
     }
   }
 
@@ -96,7 +96,6 @@ angular.module('amblr.addPOI', [])
 
   $scope.cancelPOI = function() {
     $scope.currentPOI = { type: 'good', route: null};
-    console.log('state of currentPOI', $scope.currentPOI);
     $scope.closeForm();
     $location.path('/menu/home');
   };
