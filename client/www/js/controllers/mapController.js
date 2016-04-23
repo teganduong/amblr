@@ -381,7 +381,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     }
 
     Routes.clearDirections();
-    Routes.getRoutes();
+    // Routes.getRoutes();
+    console.log('this is the routeFilter after deleting POI:', POIs.routeFilter);
     Routes.getDirections(POIs.routeFilter);
 
   };

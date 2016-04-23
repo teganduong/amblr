@@ -9,7 +9,7 @@
     <div ng-hide="currentRoute">
       <h4>&nbsp;&nbsp;Select Route to Manage:</h4>
       <ion-list can-swipe="true">
-        <ion-item ng-repeat="route in availRoutes | filter:{ userID: $parent.userID }" ng-click="$parent.selectRoute(route._id, route.name)">
+        <ion-item ng-repeat="route in availRoutes" ng-click="$parent.selectRoute(route._id, route.name)">
           {{ route.name }}
           <ion-option-button class="button-assertive" ng-click="$parent.removeRoute(route._id)">
             Remove

@@ -112,7 +112,7 @@ angular.module ('amblr.services', [])
   Routes.getDirections = function(routeId) {
     // need to get the route object to use getRoutePOIs
     var routeObject = this.getRouteById(routeId);
-    
+    console.log('route object to get directions for');
     //get the POIs associated with this route
     var waypoints = POIs.getRoutePOIs(routeObject);
 
