@@ -47,7 +47,7 @@ app.all('/*', function (req, res, next) {
   /* hack to allow setting cookies for different ports */
   res.header('Access-Control-Allow-Origin', req.headers.origin);
   res.header('Access-Control-Allow-Headers', 'Content-Type,X-Requested-With');
-  res.header('Access-Control-Allow-Methods', 'POST, GET, DELETE');
+  res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE');
   res.header("Access-Control-Allow-Credentials", true);
   next();
 });

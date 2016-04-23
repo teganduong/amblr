@@ -11,7 +11,7 @@ enable-menu-with-back-views attribute -->
         </button>
       </ion-nav-buttons>
       <ion-nav-buttons side='right'>
-          <img src="../img/star-3.png" ng-drag='true' ng-center-anchor="false"/>
+          <img src="../img/star-3.png" ng-drag='true' ng-drag-data="{ type: 'dropMarker' }" ng-center-anchor="false"/>
       </ion-nav-buttons>
     </ion-nav-bar>
     
@@ -38,7 +38,10 @@ enable-menu-with-back-views attribute -->
           <a class='item' menu-close ng-show='loggedIn' ng-click='showUserProfileModal()' ng-controller="ProfileCtrl">Profile</a>
         </li>
         <li>
-          <a class='item' menu-close ng-show='loggedIn' ng-click='showFilterModal()' ng-controller="routeFilter">Filter POIs by Route</a>
+          <a class='item' menu-close ng-click='showFilterModal()' ng-controller="routeFilter">Filter POIs by Route</a>
+        </li>
+        <li>
+          <a class='item' ng-show='loggedIn' menu-close ng-click='showRouteManageModal()' ng-controller="routeManage">Manage Routes</a>
         </li>
         <li>
           <a class='item' ng-show='loggedIn' menu-close href='/api/users/signout'>Sign Out</a>
