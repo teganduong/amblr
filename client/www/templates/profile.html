@@ -7,15 +7,15 @@
   </div>
   <ion-content class="has-header">
     <div class="list list-inset">
-      <div class="item" ng-click="setUserRoute(null)">
+      <div class="item">
         My Routes:
-        <div class="item" ng-repeat="route in myRoutes | unique: 'name'" ng-click="$parent.setUserRoute(route._id)">
+        <div class="item" ng-repeat="route in myRoutes | unique: 'name'" ng-click="setSelectedRouteOnMap(route._id)">
           {{ route.name }}
         </div>
       </div>
       <div class="item">
         My POIs:
-        <div class="item" ng-repeat="poi in myPOIs">
+        <div class="item" ng-repeat="poi in myPOIs | unique: '_id'">
           {{ poi.title }}
           <p> Description: {{ poi.description }}</p>
         </div>
