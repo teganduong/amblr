@@ -112,68 +112,80 @@ angular.module ('amblr.services', [])
   Routes.getDirections = function(routeId) {
     // need to get the route object to use getRoutePOIs
     var routeObject = this.getRouteById(routeId);
-
+    
     //get the POIs associated with this route
     var waypoints = POIs.getRoutePOIs(routeObject);
 
-    var start = waypoints.splice(0,1);
-    var end = waypoints.splice(waypoints.length -1 , 1);
-    var waypointCoords = [];
-    //splice above puts them into an array
-    // taking them out so they are in a format we expect
-    start = { lat:start[0]['lat'], lng: start[0]['long'] };
-    end = { lat:end[0]['lat'], lng: end[0]['long'] };
+    // only want to show directions if there is more than one waypoint
+    if (waypoints.length > 1 ) {
+      var start = waypoints.splice(0,1);
+      var end = waypoints.splice(waypoints.length -1 , 1);
+      var waypointCoords = [];
+      //splice above puts them into an array
+      // taking them out so they are in a format we expect
+      start = { lat:start[0]['lat'], lng: start[0]['long'] };
+      end = { lat:end[0]['lat'], lng: end[0]['long'] };
 
-    waypoints.forEach(function(waypoint, index) {
-      var coords = { lat:waypoint['lat'], lng: waypoint['long'] };
-      
-      // format needed for waypoints in directions API:
-      // https://developers.google.com/maps/documentation/javascript/directions#DirectionsRequests
-      waypointCoords.push({location:coords, stopover: true});
+      waypoints.forEach(function(waypoint, index) {
+        var coords = { lat:waypoint['lat'], lng: waypoint['long'] };
+        
+        // format needed for waypoints in directions API:
+        // https://developers.google.com/maps/documentation/javascript/directions#DirectionsRequests
+        waypointCoords.push({location:coords, stopover: true});
 
-    });
-
-    //now we can create the directions
-    uiGmapIsReady.promise()
-    .then(function (instances) {        
-      //for testing directions
-      mapInstance = instances[0].map;
-
-      uiGmapGoogleMapApi.then(function (maps) {
-         $rootScope.directionsDisplay = new maps.DirectionsRenderer();
       });
-      //end for directions
 
-    })
-    .then(function() {
-      directionsService = new google.maps.DirectionsService();
-      var directionsRequest = {
-        origin: start,
-        destination: end,
-        waypoints: waypointCoords,
-        travelMode: google.maps.DirectionsTravelMode.WALKING,
-        unitSystem: google.maps.UnitSystem.METRIC
+      //now we can create the directions
+      uiGmapIsReady.promise()
+      .then(function (instances) {        
+        //for testing directions
+        mapInstance = instances[0].map;
+
+        uiGmapGoogleMapApi.then(function (maps) {
+           $rootScope.directionsDisplay = new maps.DirectionsRenderer();
+        });
+        //end for directions
+
+      })
+      .then(function() {
+        directionsService = new google.maps.DirectionsService();
+        var directionsRequest = {
+          origin: start,
+          destination: end,
+          waypoints: waypointCoords,
+          travelMode: google.maps.DirectionsTravelMode.WALKING,
+          unitSystem: google.maps.UnitSystem.METRIC
+        };
+
+        directionsService.route(
+          directionsRequest,
+          function(response, status)
+          {
+            if (status == google.maps.DirectionsStatus.OK)
+            {
+             $rootScope.directionsDisplay.setMap(mapInstance);
+             $rootScope.directionsDisplay.setOptions({ suppressMarkers: true});
+             $rootScope.directionsDisplay.setDirections(response);
+              
+            }
+            else
+              console.log('there was an error', response);
+          }
+        );
+      })
+      .catch(function(err) {
+        console.log('error in doing things when map is ready', err);
+      });
+    } else {
+      // to do if there is only one or no POIs in a route
+      var newCenter = {
+        lat: routeObject.loc.coordinates[1],
+        lng: routeObject.loc.coordinates[0]
       };
 
-      directionsService.route(
-        directionsRequest,
-        function(response, status)
-        {
-          if (status == google.maps.DirectionsStatus.OK)
-          {
-           $rootScope.directionsDisplay.setMap(mapInstance);
-           $rootScope.directionsDisplay.setOptions({ suppressMarkers: true});
-           $rootScope.directionsDisplay.setDirections(response);
-            
-          }
-          else
-            console.log('there was an error', response);
-        }
-      );
-    })
-    .catch(function(err) {
-      console.log('error in doing things when map is ready', err);
-    });
+      $rootScope.$broadcast('recenterMap', {newCenter: newCenter});
+
+    }
   };
 
   Routes.updateRoute = function (route) {

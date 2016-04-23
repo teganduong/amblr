@@ -11,7 +11,7 @@
       <ion-list can-swipe="true">
         <ion-item ng-repeat="route in availRoutes | filter:{ userID: $parent.userID }" ng-click="$parent.selectRoute(route._id, route.name)">
           {{ route.name }}
-          <ion-option-button class="button-positive" ng-click="$parent.removeRoute(route._id)">
+          <ion-option-button class="button-assertive" ng-click="$parent.removeRoute(route._id)">
             Remove
           </ion-option-button>
         </ion-item>
@@ -22,7 +22,7 @@
       <ion-list ng-model="routePOIs" can-swipe="true">
         <ion-item ng-drag="true" ng-drag-data="{ type: 'routePOI', poiID: poi._id}" ng-drop="true" ng-drop-success="onDropComplete($data, $event, poi._id)" ng-repeat="poi in routePOIs">
           {{ poi.title }}
-          <ion-option-button class="button-positive" ng-click="removePOI(poi._id)">
+          <ion-option-button class="button-assertive" ng-click="removePOI(poi._id)">
             Remove
           </ion-option-button>
         </ion-item>
