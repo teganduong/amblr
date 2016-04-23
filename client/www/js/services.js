@@ -45,7 +45,7 @@ angular.module ('amblr.services', [])
     var url = ENV.apiEndpoint + '/api/pois/' + poiID;
     return $http.delete(url, {})
               .success(function(data, status, headers, config) {
-                console.log('POI successfully deleted!');
+                // console.log('POI successfully deleted!');
               })
               .error(function(data, status, headers, config) {
                 console.error('Error in deleting POI');
@@ -198,9 +198,21 @@ angular.module ('amblr.services', [])
       });
   }; 
 
-  Routes.clearDirections = function() {
+  Routes.clearDirections = function () {
     $rootScope.directionsDisplay && $rootScope.directionsDisplay.setMap(null);
-  } 
+  };
+
+  Routes.deleteRoute = function (routeID) {
+    var url = ENV.apiEndpoint + '/api/routes/' + routeID;
+    return $http.delete(url, {})
+      .success(function (data, status, headers, config) {
+        //console.log('Route successfully deleted!');
+      })
+      .error(function (data, status, headers, config) {
+        console.error('Error in deleting route');
+      });
+  };
+  
   return Routes;
 })
 
