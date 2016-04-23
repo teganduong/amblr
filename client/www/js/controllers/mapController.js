@@ -369,16 +369,25 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   });
 
   $scope.deletePOI = function (poiID) {
-    POIs.deletePOI(poiID);
-    $scope.map.infoWindow.show = false;
-    $scope.removeMarker();
+    POIs.deletePOI(poiID)
+    .then(function() {
+      $scope.map.infoWindow.show = false;
+      $scope.removeMarker();
 
-    for (var i = 0; i < $scope.map.POIMarkers.length; i++) {
-      if ($scope.map.POIMarkers[i].id === poiID) {
-        $scope.map.POIMarkers.splice(i, 1);
-        break;
+      for (var i = 0; i < $scope.map.POIMarkers.length; i++) {
+        if ($scope.map.POIMarkers[i].id === poiID) {
+          $scope.map.POIMarkers.splice(i, 1);
+          break;
+        }
       }
-    }
+      Routes.clearDirections();
+      return Routes.getRoutes()
+    })
+    .then(function() {
+        Routes.getDirections(POIs.routeFilter._id);
+    });
+    
+    
   };
 
 });

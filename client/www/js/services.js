@@ -144,7 +144,6 @@ angular.module ('amblr.services', [])
         uiGmapGoogleMapApi.then(function (maps) {
            $rootScope.directionsDisplay = new maps.DirectionsRenderer();
         });
-        //end for directions
 
       })
       .then(function() {
@@ -206,7 +205,6 @@ angular.module ('amblr.services', [])
     var url = ENV.apiEndpoint + '/api/routes/' + routeID;
     return $http.delete(url, {})
       .success(function (data, status, headers, config) {
-        //console.log('Route successfully deleted!');
       })
       .error(function (data, status, headers, config) {
         console.error('Error in deleting route');
