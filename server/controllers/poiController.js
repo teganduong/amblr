@@ -56,7 +56,6 @@ exports.savePOI = function(req, res) {
   }
   
   //check if the new POI has a route
-  console.log('this is the request body: ', req.body);
   if (req.body['route']) {
     var newRoute = {name: req.body['route'],
                     userID: req.body.userID};
@@ -108,7 +107,6 @@ exports.savePOI = function(req, res) {
         res.status(400);
         return res.json(err);
       }
-      console.log('added this POI to db:', newPOI);
       // logger.info('POI successfully created: ' + result);
 
       res.status(201);
