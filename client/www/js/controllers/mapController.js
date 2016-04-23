@@ -241,6 +241,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           latitude: pos.lat,
           longitude: pos.long
         };
+        $scope.map.zoom = 15;
         $rootScope.coordinates = [$scope.map.center.longitude, $scope.map.center.latitude];
 
       })
@@ -256,6 +257,13 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   // Listen for broadcast events fired from within services.js
   $scope.$on('centerMap', function () {
     $scope.setMapCenterCurrent();
+  });
+  $scope.$on('recenterMap', function(event, args) {
+    $scope.map.center = {
+          latitude: args.newCenter.lat,
+          longitude: args.newCenter.lng
+        };
+    $rootScope.coordinates = [$scope.map.center.longitude, $scope.map.center.latitude];
   });
   $scope.$on('reloadPOIs', function () {
     $scope.addNewPOIs();

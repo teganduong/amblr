@@ -4,7 +4,7 @@ angular.module('amblr.addPOI', [])
   // a boolean to show or hide the 'Add new route' text field;
   $scope.addNewRoute = false;
 
-  //for showing list of routes
+  //a boolean to show or hide the route list (controlled by clicking on add to route button)
   $scope.showRouteList = false;
   
   $scope.handleNewRoute = function(state) {
@@ -59,7 +59,8 @@ angular.module('amblr.addPOI', [])
     .then(function(poi) {
       //clear out currentPOI
       $scope.poiSaved = poi;
-      $scope.currentPOI = {type: 'good'};
+      $scope.currentPOI = {type: 'good', route: null};
+      $scope.addNewRoute = false;
       $scope.closeForm();
       // redirect to home page (may not need this)
       $scope.onSuccess();

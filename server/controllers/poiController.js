@@ -131,8 +131,9 @@ exports.getAllPOI = function(req, res) {
 
 exports.deletePOI = function (req, res) {
   var poiID = req.params.id;
+  
   POI.removeAsync({ _id: poiID }).then(function (poi) {
-    return Route.update({}, { $pull: { 'POIs': mongoose.Types.ObjectId(poiID) } }, { multi: true });
+    return Route.update({}, { $pull: { 'POIs': poiID } }, { multi: true });
   }).then(function (routes) {
     res.status(200);
     res.end();
