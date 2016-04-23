@@ -114,18 +114,22 @@ angular.module ('amblr.services', [])
 
     waypoints.forEach(function(waypoint, index) {
       var coords = { lat:waypoint['lat'], lng: waypoint['long'] };
-      waypointCoords.push(coords);
-    });
-    console.log('all waypoint coords: ', waypointCoords);
+      
+      // format needed for waypoints in directions API:
+      // https://developers.google.com/maps/documentation/javascript/directions#DirectionsRequests
+      waypointCoords.push({location:coords, stopover: true});
 
+    });
+
+    //now we can create the directions
     uiGmapIsReady.promise()
     .then(function (instances) {        
       //for testing directions
       mapInstance = instances[0].map;
 
       uiGmapGoogleMapApi.then(function (maps) {
-                      $rootScope.directionsDisplay = new maps.DirectionsRenderer();
-                  });
+         $rootScope.directionsDisplay = new maps.DirectionsRenderer();
+      });
       //end for directions
 
     })
@@ -149,7 +153,7 @@ angular.module ('amblr.services', [])
           if (status == google.maps.DirectionsStatus.OK)
           {
            $rootScope.directionsDisplay.setMap(mapInstance);
-           $rootScope.directionsDisplay.setOptions({ suppressMarkers: true, preserveViewport: true});
+           $rootScope.directionsDisplay.setOptions({ suppressMarkers: true});
            $rootScope.directionsDisplay.setDirections(response);
             
           }
