@@ -20,6 +20,13 @@ angular.module('amblr.routeFilter', [])
       });
     }
 
+    $scope.showRoutesNearMe = function() {
+      Routes.filterRoutesByDistance($rootScope.coordinates).then(function(routes) {
+        $scope.availRoutes = routes;
+        console.log(routes);
+      })
+    }
+
     $scope.hideFilterModal = function () {
       $scope.modal.hide();
     }
