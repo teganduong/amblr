@@ -13,7 +13,6 @@ exports.getAllRoutes = function(req, res) {
   });
 };
 
-<<<<<<< 6bc4adc7738eb06ab51ca57a1dbc2e8537aa5d68
 exports.updateRoute = function (req, res) {
   var route = req.body;
   
@@ -22,7 +21,7 @@ exports.updateRoute = function (req, res) {
       res.json(route);
   });
 };
-=======
+
 exports.getRoutesNearUser = function(req, res) {
   console.log('Get Routes Near Me', req.body);
   Route.find({
