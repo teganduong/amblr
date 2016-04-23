@@ -30,7 +30,7 @@ exports.getRoutesNearUser = function(req, res) {
           type: "Point", 
           coordinates: [req.body[0], req.body[1]] 
         }, 
-        $maxDistance: 10000
+        $maxDistance: 3000
       } 
     } 
   }, function(err, routes){
