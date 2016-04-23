@@ -97,6 +97,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     }
   };
   
+  //Sets up coordinates to be used by other services
+  $rootScope.coordinates = [$scope.map.center.longitude, $scope.map.center.latitude];
 
   /* hacks to get overlay to work */
   $scope.overlay = new $window.google.maps.OverlayView();
