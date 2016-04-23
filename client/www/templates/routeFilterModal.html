@@ -8,10 +8,10 @@
   <ion-content class="has-header">
     <div class="list list-inset">
       <div class="item" ng-click="setRoute(null)">
-        All POIs
-      </div>
-      <div class="item" ng-repeat="route in availRoutes" ng-click="$parent.setRoute(route._id)">
-        {{ route.name }}
+        All POIs:
+        <div class="item" ng-repeat="route in availRoutes" ng-click="$parent.setRoute(route._id)">
+          {{ route.name }}
+        </div>
       </div>
     </div>
   </ion-content>

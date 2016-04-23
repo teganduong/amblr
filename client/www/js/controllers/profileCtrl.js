@@ -25,6 +25,7 @@ angular.module('amblr.profile', [])
 
           for (var r = 0; r < $scope.allRoutes.length; r++) {
             var route = $scope.allRoutes[r];
+            console.log('route: ', route);
             if (route.userID === $rootScope.userID) {
               $scope.myRoutes.push(route);
             }
