@@ -22,7 +22,6 @@ exports.updateRoute = function (req, res) {
   });
 };
 
-
 exports.getRoutesNearUser = function(req, res) {
   console.log('Get Routes Near Me', req.body);
   Route.find({
@@ -54,3 +53,7 @@ exports.getRoute = function(req, res) {
   //   res.json(pois); 
   // });
 };
+<<<<<<< 4b3632484e92887cae0e0388b40f6f996d929925
+=======
+>>>>>>> Find routes based on distance from passed in coords
+>>>>>>> Find routes based on distance from passed in coords
