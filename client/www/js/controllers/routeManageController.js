@@ -30,14 +30,15 @@ angular.module('amblr.routeManage', [])
 
     $scope.selectRoute = function (routeID) {
       var selectedRoute = $filter('filter')($scope.availRoutes, { '_id': routeID })[0];
-      var objectIDs = selectedRoute.POIs.reduce(function (accumulator, element) {
-        accumulator[element] = true;
+
+      /* filter and order by the route POIs order */      
+      $scope.routePOIs = POIs.inMemoryPOIs.reduce(function (accumulator, element, index) {
+        var index = selectedRoute.POIs.indexOf(element._id);
+        if (index >= 0) {
+          accumulator[index] = element;
+        }
         return accumulator;
-      }, {});
-      
-      $scope.routePOIs = POIs.inMemoryPOIs.filter(function (element) {
-        return (objectIDs[element['_id']]);
-      });
+      }, []);
       
       $scope.currentRoute = selectedRoute;
     }
@@ -49,7 +50,6 @@ angular.module('amblr.routeManage', [])
     }
 
     $scope.removePOI = function (poiID) {
-      console.log($scope.currentRoute);
       for (var i = 0; i < $scope.currentRoute.POIs.length; i++) {
         if ($scope.currentRoute.POIs[i] === poiID) {
           var removedPOI = $scope.currentRoute.POIs.splice(i, 1);
@@ -62,5 +62,31 @@ angular.module('amblr.routeManage', [])
         $scope.currentRoute = route;
       });
     }
+
+    $scope.onDropComplete = function (data, event, target) {
+      /* splice out the one we want to move */
+      if (target === data.poiID) {
+        /* dropping to same location so bail */
+        return;
+      }
+      
+      var sourceIndex = $scope.currentRoute.POIs.indexOf(data.poiID);
+      var targetIndex = $scope.currentRoute.POIs.indexOf(target);
+      var tempPOIStorage =  $scope.currentRoute.POIs.splice(sourceIndex, 1)[0];
+      
+      if (target !== null) {
+        if (targetIndex >= sourceIndex) {
+          targetIndex--;
+        }
+        
+        $scope.currentRoute.POIs.splice(targetIndex, 0, tempPOIStorage);
+      } else {
+        /* dropping to end so just push into array */
+        $scope.currentRoute.POIs.push(tempPOIStorage);
+      }
+
+      // refresh route
+      $scope.selectRoute($scope.currentRoute._id);
+    };
 
   });

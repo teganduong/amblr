@@ -24,7 +24,16 @@ angular.module ('amblr.services', [])
         pois.data = pois.data.filter(function (element) {
           return (objectIDs[element['_id']]);
         });
-        console.log(pois.data);
+        
+        /* filter and order by the route POIs order */
+        pois.data = pois.data.reduce(function (accumulator, element, index) {
+          var index = self.routeFilter.POIs.indexOf(element._id);
+          if (index >= 0) {
+            accumulator[index] = element;
+          }
+          return accumulator;
+        }, []);
+        
       }
       return pois;
     })

@@ -18,8 +18,12 @@ angular.module('amblr.leftnav', ['ngDraggable'])
     $scope.isLoggedIn();
   };
   
-  $scope.$on('draggable:end', function(target, event) {
-    // hardcoded offset to 27 px
-    $scope.$broadcast('newMarkerDrop', event.x, event.y - 27);
+  $scope.$on('draggable:end', function (target, event) {
+    console.log(target, event);
+    /* only trigger for dropMarker draggable:end event */
+    if (event.data && event.data.type === 'dropMarker') {
+      // hardcoded offset to 27 px
+      $scope.$broadcast('newMarkerDrop', event.x, event.y - 27);
+    }  
   });
 });

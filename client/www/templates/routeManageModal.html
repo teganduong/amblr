@@ -16,15 +16,17 @@
     </div>
     <div ng-show="currentRoute">
       <h4>&nbsp;&nbsp;Managing Route: {{ currentRoute.name }}</h4>
-      <ion-list can-swipe="true">
-        <ion-item ng-repeat="poi in routePOIs">
+      <ion-list ng-model="routePOIs" can-swipe="true">
+        <ion-item ng-drag="true" ng-drag-data="{ type: 'routePOI', poiID: poi._id}" ng-drop="true" ng-drop-success="onDropComplete($data, $event, poi._id)" ng-repeat="poi in routePOIs">
           {{ poi.title }}
           <ion-option-button class="button-positive" ng-click="removePOI(poi._id)">
             Remove
           </ion-option-button>
         </ion-item>
       </ion-list>
-      <button class="button col block button-dark" ng-click="resetSelected()">Back</button>
+      <div ng-drop="true" ng-drop-success="onDropComplete($data, $event, null)">
+        <button class="button col block button-dark" ng-click="resetSelected()">Back</button>
+      </div>
     </div>
   </ion-content>
 </ion-modal-view>
