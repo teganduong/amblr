@@ -75,6 +75,17 @@ angular.module ('amblr.services', [])
   var Routes = {};
   var inMemoryRoutes = {};
   var directionsService = {};
+  
+  Routes.filterRoutesByDistance = function (coords) {
+    return $http({
+      method: 'POST',
+      url: ENV.apiEndpoint + '/api/routes/',
+      data: coords
+    })
+    .then(function(res) {
+      console.log(res);
+    });
+  };
 
   Routes.getRoutes = function () {
     var self = this;
@@ -87,6 +98,7 @@ angular.module ('amblr.services', [])
       });
     };
 
+<<<<<<< da195f63d505a383554bc9bc1eff73846bf9fa77
   Routes.getRouteById = function(routeId) {
     // access inMemoryRoutes
     // 
@@ -180,6 +192,8 @@ angular.module ('amblr.services', [])
     $rootScope.directionsDisplay.setMap(null);
   } 
 
+=======
+>>>>>>> Make post requests with coords to database
   return Routes;
 })
 
