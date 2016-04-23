@@ -75,6 +75,17 @@ angular.module ('amblr.services', [])
   var Routes = {};
   var inMemoryRoutes = {};
   var directionsService = {};
+  
+  Routes.filterRoutesByDistance = function (coords) {
+    return $http({
+      method: 'POST',
+      url: ENV.apiEndpoint + '/api/routes/',
+      data: coords
+    })
+    .then(function(res) {
+      return res;
+    });
+  };
 
   Routes.getRoutes = function () {
     var self = this;
@@ -179,7 +190,6 @@ angular.module ('amblr.services', [])
   Routes.clearDirections = function() {
     $rootScope.directionsDisplay.setMap(null);
   } 
-
   return Routes;
 })
 

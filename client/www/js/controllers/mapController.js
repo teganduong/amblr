@@ -98,7 +98,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     }
   };
   
-
   /* hacks to get overlay to work */
   $scope.overlay = new $window.google.maps.OverlayView();
   $scope.overlay.draw = function() {}; // empty function required
@@ -242,6 +241,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           latitude: pos.lat,
           longitude: pos.long
         };
+        $rootScope.coordinates = [$scope.map.center.longitude, $scope.map.center.latitude];
+
       })
       .catch(function(err) {
         console.log('error in getting current pos', err);

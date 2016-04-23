@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var Route = require('../models/routeModel.js');
 
 exports.getAllRoutes = function(req, res) {
-
   Route.find({}, function(err, routes) {
     if (err) {
       logger.error('ERROR in getAllPOI: ', err);
@@ -22,3 +21,20 @@ exports.updateRoute = function (req, res) {
       res.json(route);
   });
 };
+
+exports.getRoutesNearUser = function(req, res) {
+  Route.find({
+    loc: {
+      $near: {
+        $geometry: {
+          type: "Point", 
+          coordinates: [req.body[0], req.body[1]] 
+        }, 
+        $maxDistance: 3000
+      } 
+    } 
+  }, function(err, routes){
+    res.send(routes);
+  })
+};
+
