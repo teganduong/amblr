@@ -91,6 +91,18 @@ angular.module('amblr.routeManage', [])
         $scope.hideRouteManageModal();
         $scope.disableSave = false;
       });
+    };
+
+    $scope.removeRoute = function (routeID) {
+      if (!routeID) {
+        return;
+      }
+      
+      Routes.deleteRoute(routeID).then(function (result) {
+        $scope.showRouteManageModal();
+      }).catch(function (error) {
+        console.log('Error: while deleting route', error)
+      });
     }
 
   });

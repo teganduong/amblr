@@ -6,7 +6,7 @@ const routeController = require('../controllers/routeController.js');
 // the path '/api/routes' is already prepended to all routes based on app.use statement in server.js
 routeRouter.route('/').get(routeController.getAllRoutes);
 routeRouter.route('/').put(routeController.updateRoute);
-// poiRouter.route('/').post(routeController.saveRoute);
-routeRouter.route('/').post(routeController.getRoutesNearUser)
+routeRouter.route('/').post(routeController.getRoutesNearUser);
+routeRouter.route('/:id').delete(routeController.deleteRoute);
 
 module.exports = routeRouter;
