@@ -23,7 +23,6 @@ exports.updateRoute = function (req, res) {
 };
 
 exports.getRoutesNearUser = function(req, res) {
-  console.log('Get Routes Near Me', req.body);
   Route.find({
     loc: {
       $near: {
@@ -35,20 +34,7 @@ exports.getRoutesNearUser = function(req, res) {
       } 
     } 
   }, function(err, routes){
-    console.log(routes);
     res.send(routes);
   })
 };
 
-exports.getRoute = function(req, res) {
-
-  // Route.find({}, function(err, routes) {
-  //   if (err) {
-  //     logger.error('ERROR in getAllPOI: ', err);
-  //     return res.json(err);
-  //   } 
-      
-  //   // logger.info('Successfully retrieved pois: ' + pois);
-  //   res.json(pois); 
-  // });
-};
